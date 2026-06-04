@@ -1,0 +1,9 @@
+.DS_Store
+.playwright-mcp/
+
+/admin/logs/
+/config/*.lock
+/i/**
+!/i/.htaccess
+!/i/favicon.ico
+!/i/index.html

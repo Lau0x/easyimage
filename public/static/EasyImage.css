@@ -1,0 +1,67 @@
+    /* 返回顶部 */
+    .btn-back-to-top {
+        padding: 0.5rem 1rem;
+        position: fixed;
+        right: 2rem;
+        bottom: 1rem;
+        z-index: 2;
+        -webkit-transition: -webkit-transform 0.2s ease;
+        transition: transform 0.2s ease;
+        -webkit-transform: translateY(200%);
+        transform: translateY(200%);
+    }
+
+    .btn-back-to-top.scrolled {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    /** 图片列表*/
+    @media screen and (min-width:960px) {
+        .listNum img {
+            width: 258px;
+            height: 258px;
+        }
+    }
+
+    @media screen and (max-width:960px) {
+        .listNum img {
+            width: 358px;
+            height: 258px;
+        }
+    }
+
+    .cards {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .card {
+        box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+        border-radius: 5px 5px 5px 5px;
+    }
+
+    img {
+        cursor: pointer;
+        transition: all 0.8s;
+    }
+
+    img:hover {
+        transform: scale(1.5);
+        position: relative;
+        z-index: 100;
+    }
+
+    .bottom-bar {
+        opacity: 0;
+        width: 100%;
+        position: absolute;
+        bottom: 0.1px;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .bottom-bar:hover {
+        opacity: 1;
+    }

@@ -1,0 +1,13 @@
+services:
+  easyimage:
+    build: .
+    image: easyimage:local
+    ports:
+      - "${EASYIMAGE_PORT:-8080}:80"
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./i:/var/www/html/i
+      - ./config:/var/www/html/config
+      - ./admin/logs:/var/www/html/admin/logs
+    restart: unless-stopped

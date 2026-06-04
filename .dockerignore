@@ -1,0 +1,13 @@
+.DS_Store
+.git
+.github
+.idea
+.vscode
+admin/logs/*
+config/*.lock
+docs
+i/*
+!i/.htaccess
+!i/favicon.ico
+!i/index.html
+node_modules
