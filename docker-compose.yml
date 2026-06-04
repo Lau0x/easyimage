@@ -1,7 +1,6 @@
 services:
   easyimage:
-    build: .
-    image: easyimage:local
+    image: ghcr.io/lau0x/easyimage:latest
     ports:
       - "${EASYIMAGE_PORT:-8080}:80"
     environment:
