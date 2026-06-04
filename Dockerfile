@@ -23,6 +23,7 @@ RUN set -eux; \
 
 COPY docker/php.ini /usr/local/etc/php/conf.d/easyimage.ini
 COPY docker/apache-security.conf /etc/apache2/conf-available/easyimage-security.conf
+COPY docker/entrypoint.sh /usr/local/bin/easyimage-entrypoint
 COPY . /var/www/html
 
 RUN set -eux; \
@@ -34,9 +35,15 @@ RUN set -eux; \
         /var/www/html/admin/logs/tasks \
         /var/www/html/admin/logs/upload \
         /var/www/html/admin/logs/version; \
+    mkdir -p /usr/src/easyimage-config; \
+    cp -a /var/www/html/config/. /usr/src/easyimage-config/; \
     chown -R www-data:www-data /var/www/html/i /var/www/html/config /var/www/html/admin/logs; \
     find /var/www/html -type d -exec chmod 755 {} \;; \
     find /var/www/html -type f -exec chmod 644 {} \;; \
+    chmod 755 /usr/local/bin/easyimage-entrypoint; \
     chmod 755 /var/www/html/app/upload.php
 
 EXPOSE 80
+
+ENTRYPOINT ["easyimage-entrypoint"]
+CMD ["apache2-foreground"]
