@@ -1,6 +1,7 @@
 services:
   easyimage:
     image: ghcr.io/lau0x/easyimage:latest
+    platform: ${EASYIMAGE_PLATFORM:-linux/amd64}
     ports:
       - "${EASYIMAGE_PORT:-8080}:80"
     environment:
