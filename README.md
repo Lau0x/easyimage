@@ -1,14 +1,14 @@
 ## EasyImage2.0 简单图床
 
-[![EasyImage2.0 GitHub's stars](https://img.shields.io/github/stars/icret/easyImage2.0?style=social)](https://github.com/icret/EasyImages2.0/stargazers)
-[![EasyImage2.0 GitHub's forks](https://img.shields.io/github/forks/icret/easyimage2.0?style=social)](https://github.com/icret/EasyImages2.0/network/members)
+[![EasyImage2.0 GitHub's stars](https://img.shields.io/github/stars/Lau0x/easyimage?style=social)](https://github.com/Lau0x/easyimage/stargazers)
+[![EasyImage2.0 GitHub's forks](https://img.shields.io/github/forks/Lau0x/easyimage?style=social)](https://github.com/Lau0x/easyimage/network/members)
 [![PHP](https://img.shields.io/badge/php-5.6%20--%208.0-blue.svg)](http://php.net)
-[![Release](https://img.shields.io/github/v/release/icret/EasyImages2.0)](https://github.com/icret/EasyImages2.0/releases)
-[![jsdelivr](https://data.jsdelivr.com/v1/package/gh/icret/EasyImages2.0/badge)](https://cdn.jsdelivr.net/gh/icret/EasyImages2.0@EasyImage2.0/)
-[![License](https://img.shields.io/badge/license-GPL_V2.0-yellowgreen.svg)](https://github.com/icret/EasyImages2.0/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/v/release/Lau0x/easyimage)](https://github.com/Lau0x/easyimage/releases)
+[![jsdelivr](https://data.jsdelivr.com/v1/package/gh/Lau0x/easyimage/badge)](https://cdn.jsdelivr.net/gh/Lau0x/easyimage/)
+[![License](https://img.shields.io/badge/license-GPL_V2.0-yellowgreen.svg)](https://github.com/Lau0x/easyimage/blob/main/LICENSE)
 [![QQ group](https://pub.idqqimg.com/wpa/images/group.png)](https://jq.qq.com/?_wv=1027&k=jfXRHU8Y)
 
-[演示](https://png.cm/) · [手册](https://icret.github.io/EasyImages2.0/#/) · [社区](https://github.com/icret/EasyImages2.0/discussions) · [Telegram](https://t.me/Easy_Image) - 插件: [Chrome](/docs/Chrome插件.md) · [Edge](/docs/Edge插件.md) · [PicGo](/docs/使用PicGo上传.md) · [ShareX](/docs/使用ShareX上传.md) · [Docker](/docs/三方安装指南.md)
+[演示](https://png.cm/) · [手册](https://icret.github.io/EasyImages2.0/#/) · [反馈](https://github.com/Lau0x/easyimage/issues) · [Telegram](https://t.me/Easy_Image) - 插件: [Chrome](/docs/Chrome插件.md) · [Edge](/docs/Edge插件.md) · [PicGo](/docs/使用PicGo上传.md) · [ShareX](/docs/使用ShareX上传.md) · [Docker](/docs/三方安装指南.md)
 
 目录: [安装](/docs/安装图床.md) | [安全](/docs/安全配置.md) | [API](/docs/API.md) | [鉴黄](/docs/鉴黄.md) | [升级](/docs/图床更新升级.md) | [常见问题](/docs/常见问题.md) | [环境/兼容](#环境要求) | [更新日志](/docs/update.md) | [打赏开发者](/docs/打赏开发者.md) | [鸣谢](#鸣谢) | [许可证](#开源许可) 
 
@@ -17,7 +17,7 @@
 之前一直用的图床程序是:[PHP多图长传程序2.4.3](https://www.jb51.net/codes/40544.html)
 由于版本过老并且使用falsh上传，在当前html5流行大势所趋下，遂利用基础知识新写了一个以html5为默认上传并且支持flash,向下兼容至IE9。
 ***本程序环境要求极低，适用于单一场景（游客上传）和个人使用，不适于多用户复杂场景***
->本人善写bug 发现bug可提交 [issues](https://github.com/icret/EasyImages2.0/issues) 追求稳定请下载 [稳定版](https://github.com/icret/EasyImages2.0/releases)
+>本人善写bug 发现bug可提交 [issues](https://github.com/Lau0x/easyimage/issues) 追求稳定请下载 [稳定版](https://github.com/Lau0x/easyimage/releases)
 
 ## Docker 快速部署
 
@@ -96,9 +96,9 @@ docker run -d --name easyimage -p 8080:80 \
   
 ## 开源许可
 
- - [GPL-2.0](https://github.com/icret/EasyImages2.0/blob/master/LICENSE) 
+ - [GPL-2.0](https://github.com/Lau0x/easyimage/blob/main/LICENSE)
  - Copyright © 2018 EasyImage Developer By [Icret](https://github.com/icret)
  
 * have fun!
 
-[![Stargazers over time](https://starchart.cc/icret/EasyImages2.0.svg)](https://github.com/icret/EasyImages2.0/stargazers)
+[![Stargazers over time](https://starchart.cc/Lau0x/easyimage.svg)](https://github.com/Lau0x/easyimage/stargazers)

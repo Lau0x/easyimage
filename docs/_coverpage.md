@@ -8,7 +8,7 @@
 - 始于2018年7月，支持多文件上传，功能强大
 - 本程序对于环境要求极低
 
-[GitHub](https://github.com/icret/EasyImages2.0)
+[GitHub](https://github.com/Lau0x/easyimage)
 [DEMO](https://png.cm/)
 
 <!-- ![color](#f1939c) -->

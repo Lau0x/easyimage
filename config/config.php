@@ -4,12 +4,12 @@ $config=Array
 	'title'=>'简单图床 - EasyImage',
 	'keywords'=>'简单图床,easyimage,easyimage2.0,无数据库图床,免费图床,PHP多图长传程序,自适应页面,一键复制链接,HTML5,markdown,bbscode',
 	'description'=>'简单图床EasyImage是一款支持多文件上传的无数据库图床,可以完美替代PHP多图上传程序,最新html5自适应页面兼容手机电脑,上传后返回图片直链,markdown图片,论坛贴图bbscode链接,简单方便支持一键复制,支持多域名,api上传',
-	'tips'=>'<a href="https://github.com/icret/EasyImages2.0" target="_black"><i class="icon icon-github"> 如果你喜欢这种图床风格就下载喔 (๑•̀ㅂ•́)و✧</i></a>
-<a href="https://github.com/icret/EasyImages2.0" target="_black"><i class="icon icon-heart"> 简单图床是一款开源图床, 支持多文件上传无数据库</i></a>
+	'tips'=>'<a href="https://github.com/Lau0x/easyimage" target="_black"><i class="icon icon-github"> 如果你喜欢这种图床风格就下载喔 (๑•̀ㅂ•́)و✧</i></a>
+<a href="https://github.com/Lau0x/easyimage" target="_black"><i class="icon icon-heart"> 简单图床是一款开源图床, 支持多文件上传无数据库</i></a>
 <a><li class="icon icon-bullhorn text-muted"> 单文件≤10M,单次上传≤30张</li></a>',
 	'notice_status'=>0,
 	'notice'=>'<p>简单图床是一款开源图床, 支持多文件上传无数据库；</p>
-<p>如果你喜欢这种图床风格就<a href="https://github.com/icret/EasyImages2.0" target="_black">下载</a>喔 (๑•̀ㅂ•́)و✧</p>',
+<p>如果你喜欢这种图床风格就<a href="https://github.com/Lau0x/easyimage" target="_black">下载</a>喔 (๑•̀ㅂ•́)و✧</p>',
 	'domain'=>'http://127.0.0.1',
 	'imgurl'=>'http://127.0.0.1',
 	'user'=>'admin',
@@ -60,7 +60,7 @@ $config=Array
 	'imgRatio_preserve_headers'=>1,
 	'static_cdn'=>0,
 	'theme'=>'default',
-	'static_cdn_url'=>'https://fastly.jsdelivr.net/gh/icret/EasyImages2.0',
+	'static_cdn_url'=>'https://fastly.jsdelivr.net/gh/Lau0x/easyimage',
 	'TinyPng_key'=>'',
 	'checkImg'=>0,
 	'checkImg_value'=>80,
@@ -121,7 +121,7 @@ $config=Array
 	'chunks'=>0,
 	'NProgress_default'=>'#000000',
 	'NProgress_Progress'=>'#03aa62',
-	'footer'=>'<script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?c790ac2bdc2f385757ecd0183206108d";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>',
+	'footer'=>'',
 	'ad_top'=>0,
 	'ad_top_info'=>' <!--广告 按照这个范例替换相应链接，如果想多几个广告，就多复制几个-->
 <div class="col-md-12" style="text-align: center;margin:2px;"><a href="https://app.cloudcone.com.cn/?ref=3521" target="_blank"><img src="/public/images/EasyImage2.0.png" /></a></div>',
@@ -135,7 +135,7 @@ $config=Array
 <h5>作为开发者你可以对相应功能进行扩展(增删改相应代码), 但请保留代码中源作者信息。</h5>
 <a href="https://png.cm/?admin.inc" target="_blank"><button type="button" class="btn btn-mini"><i class="icon icon-external-link"></i> 演示</button></a>
 <a href="https://icret.github.io/EasyImages2.0/#/" target="_blank"><button type="button" class="btn btn-mini"><i class="icon icon-book"></i> 手册</button></a>
-<a href="https://github.com/icret/EasyImages2.0/discussions" target="_blank"><button type="button" class="btn btn-mini"><i class="icon icon-comments-alt"></i> 社区</button></a>
+<a href="https://github.com/Lau0x/easyimage/issues" target="_blank"><button type="button" class="btn btn-mini"><i class="icon icon-comments-alt"></i> 反馈</button></a>
 <a href="https://t.me/Easy_Image" target="_blank" data-toggle="tooltip" title="EasyImage Telegram Group"><button type="button" class="btn btn-mini"><i class="icon icon-plane"></i> Telegram</button></a>
 <span data-toggle="tooltip" title="您的赞美是我开发的动力!"><button type="button" class="btn btn-mini btn-primary" data-toggle="modal" data-moveable="true" data-size="sm" data-icon="heart" data-title="您的赞美是我开发的动力!" data-custom="<ul class=\'nav nav-tabs\'><li class=\'active\'><a data-tab href=\'#wechat\'><i class=\'icon icon-wechat\' style=\'color:#329d38;\'> 微信</i></a></li><li><a data-tab href=\'#alipay\'><i class=\'icon icon-zhifubao-square\' style=\'color:#1970fc;\'> 支付宝</i></a></li></ul><div class=\'tab-content\'><div class=\'tab-pane active\' id=\'wechat\'><img src=\'../public/images/wechat.jpg\'></div><div class=\'tab-pane\' id=\'alipay\'><img src=\'../public/images/alipay.jpg\'></div></div>"><i class="icon icon-yen"></i>打赏作者</button></span>
 </div>',
