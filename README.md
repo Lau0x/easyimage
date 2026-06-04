@@ -30,7 +30,7 @@ docker compose pull
 docker compose up -d
 ```
 
-启动后访问 `http://localhost:8080/install` 完成安装。默认镜像是 `ghcr.io/lau0x/easyimage:latest`，当前发布 `linux/amd64` 版本，Apple Silicon / ARM 主机也会通过 Compose 的 `platform` 设置自动拉取运行。默认端口是 `8080`，需要改端口时把 `docker-compose.yml` 里的 `8080:80` 改成类似 `8088:80` 即可。
+启动后访问 `http://localhost:8080/install` 完成安装。默认镜像是 `ghcr.io/lau0x/easyimage:latest`，支持 `linux/amd64` 和 `linux/arm64`。默认端口是 `8080`，需要改端口时把 `docker-compose.yml` 里的 `8080:80` 改成类似 `8088:80` 即可。
 
 也可以不 clone 仓库，直接拉镜像运行：
 
@@ -38,7 +38,6 @@ docker compose up -d
 mkdir -p easyimage/i easyimage/config easyimage/admin/logs
 cd easyimage
 docker run -d --name easyimage -p 8080:80 \
-  --platform linux/amd64 \
   -e TZ=Asia/Shanghai \
   -v "$PWD/i:/var/www/html/i" \
   -v "$PWD/config:/var/www/html/config" \

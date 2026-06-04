@@ -9,13 +9,26 @@ on:
       - published
   workflow_dispatch:
 
+env:
+  IMAGE_NAME: ghcr.io/lau0x/easyimage
+
 permissions:
   contents: read
   packages: write
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            platform: linux/amd64
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            platform: linux/arm64
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,21 +43,84 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/lau0x/easyimage
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=sha,prefix=
-            type=ref,event=tag
-
-      - name: Build and push
+      - name: Build and push by digest
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          platforms: ${{ matrix.platform }}
+          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
+          labels: |
+            org.opencontainers.image.source=https://github.com/Lau0x/easyimage
+            org.opencontainers.image.description=Lightweight no-database EasyImage fork with Docker deployment
+            org.opencontainers.image.licenses=GPL-2.0
+
+      - name: Export digest
+        run: |
+          mkdir -p "$RUNNER_TEMP/digests"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "$RUNNER_TEMP/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ matrix.arch }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digest-*
+          merge-multiple: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create manifest tags
+        id: tags
+        run: |
+          short_sha="${GITHUB_SHA::7}"
+          {
+            echo "tags<<EOF"
+            echo "$IMAGE_NAME:$short_sha"
+            if [ "$GITHUB_EVENT_NAME" = "release" ]; then
+              echo "$IMAGE_NAME:${{ github.event.release.tag_name }}"
+              echo "$IMAGE_NAME:latest"
+            elif [ "$GITHUB_REF" = "refs/heads/main" ]; then
+              echo "$IMAGE_NAME:latest"
+            fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create multi-arch image
+        run: |
+          tag_args=""
+          while IFS= read -r tag; do
+            [ -n "$tag" ] && tag_args="$tag_args -t $tag"
+          done <<'EOF'
+          ${{ steps.tags.outputs.tags }}
+          EOF
+
+          image_args=""
+          for digest in "$RUNNER_TEMP"/digests/*; do
+            image_args="$image_args $IMAGE_NAME@sha256:$(basename "$digest")"
+          done
+
+          docker buildx imagetools create $tag_args $image_args
+
+      - name: Inspect latest image
+        run: docker buildx imagetools inspect "$IMAGE_NAME:latest"
