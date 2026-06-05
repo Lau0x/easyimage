@@ -1,17 +1,17 @@
 <?php
 
-$enabled = strtolower(trim((string)getenv('EASYIMAGE_HOTLINK')));
+$enabled = strtolower(trim((string)getenv('PICLITE_HOTLINK')));
 $enabledValues = array('1', 'true', 'yes', 'on');
-$confFile = '/etc/apache2/conf-enabled/easyimage-hotlink.conf';
+$confFile = '/etc/apache2/conf-enabled/piclite-hotlink.conf';
 
 if (!in_array($enabled, $enabledValues, true)) {
     @unlink($confFile);
     exit(0);
 }
 
-$allowEmpty = strtolower(trim((string)getenv('EASYIMAGE_HOTLINK_ALLOW_EMPTY')));
+$allowEmpty = strtolower(trim((string)getenv('PICLITE_HOTLINK_ALLOW_EMPTY')));
 $allowEmpty = $allowEmpty === '' || in_array($allowEmpty, $enabledValues, true);
-$domainValue = (string)getenv('EASYIMAGE_HOTLINK_DOMAINS');
+$domainValue = (string)getenv('PICLITE_HOTLINK_DOMAINS');
 $domains = preg_split('/\s*,\s*/', $domainValue, -1, PREG_SPLIT_NO_EMPTY);
 $patterns = array();
 

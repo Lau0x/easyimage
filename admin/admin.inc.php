@@ -977,9 +977,9 @@ auto_delete(); //定时删除
                 <a href="../docs/#/./使用PicGo上传" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用PicGo上传">PicGo</span></a>
                 <h6>开发支持</h6>
                 <p>
-                    <a href="https://github.com/Lau0x/easyimage" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="PicLite GitHub"><i class="icon icon-github"></i> GitHub</span></a>
-                    <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://github.com/Lau0x/easyimage#readme'; ?>" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用手册"><i class="icon icon-book"></i> Manual</span></a>
-                    <a href="https://github.com/Lau0x/easyimage/issues" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="问题反馈"><i class="icon icon-comments-alt"></i> Issues</span></a>
+                    <a href="https://github.com/Lau0x/piclite" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="PicLite GitHub"><i class="icon icon-github"></i> GitHub</span></a>
+                    <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://github.com/Lau0x/piclite#readme'; ?>" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用手册"><i class="icon icon-book"></i> Manual</span></a>
+                    <a href="https://github.com/Lau0x/piclite/issues" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="问题反馈"><i class="icon icon-comments-alt"></i> Issues</span></a>
                     <a href="https://github.com/icret/EasyImages2.0" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="上游项目"><i class="icon icon-heart"></i> Upstream</span></a>
                     <span data-toggle="tooltip" title="当前版本"><button type="button" class="btn btn-sm btn-primary label label-badge label-primary" data-toggle="modal" data-moveable="true" ata-size="sm" data-scroll-inside="true" data-icon="heart" data-title="当前版本更新日志" data-custom="<pre style='background-color: rgba(0, 0, 0, 0);border-color:rgba(0, 0, 0, 0);'><?php echo getVersion('name') . '<br/><br/>' . getVersion('body'); ?></pre>"><i class="icon icon-github"></i> <?php echo APP_VERSION; ?></button></span>
                 </p>
@@ -998,7 +998,7 @@ auto_delete(); //定时删除
                     <?php else : ?>
                         <span class="label label-badge label-primary" data-toggle="tooltip" title="监黄 moderatecontent<br/>已填写">Moderatecontent</span>
                     <?php endif; ?>
-                    <a href="https://github.com/Lau0x/easyimage/blob/main/LICENSE" target="_blank"><span class="label label-badge" data-toggle="tooltip" title="开源许可证">GPL-2.0</span></a>
+                    <a href="https://github.com/Lau0x/piclite/blob/main/LICENSE" target="_blank"><span class="label label-badge" data-toggle="tooltip" title="开源许可证">GPL-2.0</span></a>
                 </p>
                 <p class="text-muted"><i class="icon icon-certificate"> PicLite 基于 EasyImages2.0 继续维护, 感谢上游项目和依赖项目。</i></p>
             </div>
@@ -1017,9 +1017,9 @@ auto_delete(); //定时删除
                 <div class="bg-warning with-padding hidden-xs">
                     <h5 class="header-dividing"><span class="label label-success">New</span> <?php echo getVersion('name'); ?></h5>
                     <pre style="background-color: rgba(0, 0, 0, 0);border-color:rgba(0, 0, 0, 0);">更新内容: <br /><?php echo getVersion('body'); ?></pre>
-                    <h6>* 更新日期: <?php echo getVersion('created_at'); ?> 下载新版本上传至网站升级 <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://github.com/Lau0x/easyimage#readme'; ?>" target="_blank" data-toggle="tooltip" title="升级方法"><i class="icon icon-question"></i></a> 然后点击更新版本号。</h6>
+                    <h6>* 更新日期: <?php echo getVersion('created_at'); ?> 下载新版本上传至网站升级 <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://github.com/Lau0x/piclite#readme'; ?>" target="_blank" data-toggle="tooltip" title="升级方法"><i class="icon icon-question"></i></a> 然后点击更新版本号。</h6>
                     <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href="https://github.com/Lau0x/easyimage/releases" target="_blank" data-toggle="tooltip" title="Releases Info">Github</a>
+                        <a class="btn btn-mini btn-primary" href="https://github.com/Lau0x/piclite/releases" target="_blank" data-toggle="tooltip" title="Releases Info">Github</a>
                         <a class="btn btn-mini btn-primary" href="<?php echo getVersion('zipball_url'); ?>" target="_blank" data-toggle="tooltip" title="① 下载后上传至网站更新">下载新版本</a>
                         <a class="btn btn-mini btn-danger" href="#" id="post" onclick="ajax_post('/admin/logs/version/version.json','del_version_file')" data-toggle="tooltip" title="② 升级后获取新的版本信息">更新版本号</a>
                     </div>

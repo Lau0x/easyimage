@@ -3,7 +3,7 @@
 /**
  * @author   icret
  * @project  PicLite
- * @Github   https://github.com/Lau0x/easyimage
+ * @Github   https://github.com/Lau0x/piclite
  * @upstream https://github.com/icret/EasyImages2.0
  * @Last     2024-01-20
 

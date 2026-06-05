@@ -188,7 +188,7 @@ $installTokenRequired = easyimage_install_token_required();
             <!-- 对话框触发按钮 -->
             <a href="#" data-position="center" data-moveable="inside" data-moveable="true" data-toggle="modal" data-target="#myModal"><i class="icon icon-qrcode"></i>二维码 </a>
         </div>
-        <?php echo 'Copyright © 2018' . date('-Y'); ?> <a href="https://github.com/Lau0x/easyimage" target="_blank">PicLite</a> · Forked from <a href="https://github.com/icret/EasyImages2.0" target="_blank">EasyImages2.0</a> Version:<a href="https://github.com/Lau0x/easyimage" target="_blank"> <?php echo APP_VERSION; ?></a>
+        <?php echo 'Copyright © 2018' . date('-Y'); ?> <a href="https://github.com/Lau0x/piclite" target="_blank">PicLite</a> · Forked from <a href="https://github.com/icret/EasyImages2.0" target="_blank">EasyImages2.0</a> Version:<a href="https://github.com/Lau0x/piclite" target="_blank"> <?php echo APP_VERSION; ?></a>
     </footer>
 </body>
 

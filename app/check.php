@@ -17,7 +17,7 @@ file_put_contents(APP_ROOT . '/config/EasyIamge.lock', '安装环境检测锁定
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">关闭</span></button>
                 <h4 class="modal-title">
-                    <i class="icon icon-heart"> </i><a href="https://github.com/Lau0x/easyimage" target="_blank">PicLite</a> 安装环境检测
+                    <i class="icon icon-heart"> </i><a href="https://github.com/Lau0x/piclite" target="_blank">PicLite</a> 安装环境检测
                 </h4>
             </div>
             <div class="modal-body">

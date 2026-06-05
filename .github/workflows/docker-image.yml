@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ghcr.io/lau0x/easyimage
+  IMAGE_NAME: ghcr.io/lau0x/piclite
 
 permissions:
   contents: read
@@ -61,7 +61,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
           labels: |
-            org.opencontainers.image.source=https://github.com/Lau0x/easyimage
+            org.opencontainers.image.source=https://github.com/Lau0x/piclite
             org.opencontainers.image.description=PicLite: lightweight no-database image host with Docker deployment
             org.opencontainers.image.licenses=GPL-2.0
 

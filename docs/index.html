@@ -22,7 +22,7 @@
         window.$docsify = {
             name: 'PicLite | 文档',
             // homepage: '../README.md',
-            repo: 'Lau0x/easyimage',//渲染github挂件 配置本地或线上地址
+            repo: 'Lau0x/piclite',//渲染github挂件 配置本地或线上地址
             loadSidebar: true,   //开启侧边栏 使用_sidebar.md 
             subMaxLevel: 1,      //侧边栏层级最大层级2
             loadNavbar: true,    //加载导航栏 需要编写_navbar.md
@@ -64,7 +64,7 @@
 
                 function (hook, vm) {
                     hook.beforeEach(function (html) {
-                        var url = '//github.com/Lau0x/easyimage/blob/main/docs/' + vm.route.file;
+                        var url = '//github.com/Lau0x/piclite/blob/main/docs/' + vm.route.file;
                         var editHtml = '<a href="' + url + '" target="_blank">在 GitHub 上编辑</a>';
 
                         return (html + '<br/><br/><br/><br/><br/>' + editHtml);

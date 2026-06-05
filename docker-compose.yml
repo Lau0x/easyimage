@@ -1,6 +1,6 @@
 services:
-  easyimage:
-    image: ghcr.io/lau0x/easyimage:latest
+  piclite:
+    image: ghcr.io/lau0x/piclite:latest
     ports:
       - "8080:80"
     environment:

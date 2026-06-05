@@ -189,7 +189,7 @@ function easyimage_require_csrf($json = false)
 
 function easyimage_install_token()
 {
-    $envToken = getenv('EASYIMAGE_INSTALL_TOKEN');
+    $envToken = getenv('PICLITE_INSTALL_TOKEN');
     if ($envToken !== false && trim($envToken) !== '') {
         return trim($envToken);
     }

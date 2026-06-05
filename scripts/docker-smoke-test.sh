@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-IMAGE="${IMAGE:-easyimage:smoke}"
+IMAGE="${IMAGE:-piclite:smoke}"
 CONTAINERS=""
 
 cleanup() {
@@ -66,7 +66,7 @@ assert_status 403 "http://127.0.0.1:$plain_port/config/config.php"
 assert_status 403 "http://127.0.0.1:$plain_port/i/pwn.php"
 assert_status 200 "http://127.0.0.1:$plain_port/i/test.png" "https://bad.test/page"
 
-hotlink_container="$(docker run -d -e EASYIMAGE_HOTLINK=1 -e EASYIMAGE_HOTLINK_DOMAINS=allowed.test -p 127.0.0.1::80 "$IMAGE")"
+hotlink_container="$(docker run -d -e PICLITE_HOTLINK=1 -e PICLITE_HOTLINK_DOMAINS=allowed.test -p 127.0.0.1::80 "$IMAGE")"
 CONTAINERS="$CONTAINERS $hotlink_container"
 hotlink_port="$(container_port "$hotlink_container")"
 wait_http "http://127.0.0.1:$hotlink_port/install/index.php"
@@ -76,7 +76,7 @@ assert_status 200 "http://127.0.0.1:$hotlink_port/i/test.png" "https://allowed.t
 assert_status 200 "http://127.0.0.1:$hotlink_port/i/test.png" "https://img.allowed.test/page"
 assert_status 403 "http://127.0.0.1:$hotlink_port/i/test.png" "https://bad.test/page"
 
-strict_hotlink_container="$(docker run -d -e EASYIMAGE_HOTLINK=1 -e EASYIMAGE_HOTLINK_DOMAINS=allowed.test -e EASYIMAGE_HOTLINK_ALLOW_EMPTY=0 -p 127.0.0.1::80 "$IMAGE")"
+strict_hotlink_container="$(docker run -d -e PICLITE_HOTLINK=1 -e PICLITE_HOTLINK_DOMAINS=allowed.test -e PICLITE_HOTLINK_ALLOW_EMPTY=0 -p 127.0.0.1::80 "$IMAGE")"
 CONTAINERS="$CONTAINERS $strict_hotlink_container"
 strict_hotlink_port="$(container_port "$strict_hotlink_container")"
 wait_http "http://127.0.0.1:$strict_hotlink_port/install/index.php"

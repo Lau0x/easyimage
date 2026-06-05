@@ -9,6 +9,6 @@
 - Docker 多架构镜像
 - 基于 EasyImages2.0 继续维护
 
-[GitHub](https://github.com/Lau0x/easyimage)
+[GitHub](https://github.com/Lau0x/piclite)
 
 <!-- ![color](#f1939c) -->

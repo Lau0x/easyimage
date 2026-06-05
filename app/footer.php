@@ -46,7 +46,7 @@ if ($config['notice_status'] > 0) : ?>
   <?php /** 页脚自定义代码 */ echo $config['footer']; ?>
   <p>
     <!-- 页脚信息 -->
-    <a href="https://github.com/Lau0x/easyimage" target="_blank" rel="nofollow" data-toggle="tooltip" title="PicLite">PicLite</a>
+    <a href="https://github.com/Lau0x/piclite" target="_blank" rel="nofollow" data-toggle="tooltip" title="PicLite">PicLite</a>
     <a href="https://github.com/icret/EasyImages2.0" target="_blank" data-toggle="tooltip" title="Forked from EasyImages2.0">© Since 2018</a>
     <a href="/app/DMCA.php" target="_blank" data-toggle="tooltip" title="使用协议">DMCA</a>
     <!-- 二维码按钮 -->
