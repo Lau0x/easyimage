@@ -17,7 +17,7 @@ file_put_contents(APP_ROOT . '/config/EasyIamge.lock', '安装环境检测锁定
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">关闭</span></button>
                 <h4 class="modal-title">
-                    <i class="icon icon-heart"> </i><a href="https://github.com/icret/EasyImages2.0" target="_blank">简单图床-EasyImage2.0</a> 安装环境检测
+                    <i class="icon icon-heart"> </i><a href="https://github.com/Lau0x/easyimage" target="_blank">PicLite</a> 安装环境检测
                 </h4>
             </div>
             <div class="modal-body">
@@ -26,7 +26,7 @@ file_put_contents(APP_ROOT . '/config/EasyIamge.lock', '安装环境检测锁定
                 <h5>2. 上传失败大部分是由于<span class="text-red">upload_max_filesize、post_max_size、文件权限</span>设置不正确;</h5>
                 <h5>3. 主要用到<span class="text-red">Fileinfo、GD、Openssl</span>扩展,如果缺失会导致无法访问管理面板以及上传/删除图片。</h5>
                 <hr />
-                <h4>EasyImage2.0 基础检测:</h4>
+                <h4>PicLite 基础检测:</h4>
                 <p>当前PHP版本:<sapn class="text-green"><?php echo phpversion() ?></sapn>
                 </p>
                 <p>PHP最大上传: <sapn class="text-green"><?php echo ini_get('upload_max_filesize'); ?></sapn>

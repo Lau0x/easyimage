@@ -7,22 +7,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="renderer" content="webkit" />
     <meta name="force-rendering" content="webkit" />
-    <meta name="author" content="Icret EasyImage2.0">
+    <meta name="author" content="PicLite">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>EasyImage2.0 简单图床</title>
+    <title>PicLite 文档</title>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
     <link href="//cdn.bootcdn.net/ajax/libs/docsify/4.13.0/themes/vue.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div id="app">EasyImage2.0 简单图床文档...</div>
+    <div id="app">PicLite 文档...</div>
 
     <script>
         window.$docsify = {
-            name: '简单图床 | 文档',
+            name: 'PicLite | 文档',
             // homepage: '../README.md',
-            repo: 'icret/EasyImages2.0',//渲染github挂件 配置本地或线上地址
+            repo: 'Lau0x/easyimage',//渲染github挂件 配置本地或线上地址
             loadSidebar: true,   //开启侧边栏 使用_sidebar.md 
             subMaxLevel: 1,      //侧边栏层级最大层级2
             loadNavbar: true,    //加载导航栏 需要编写_navbar.md
@@ -53,7 +53,7 @@
                     var footer = [
                         '<hr/>',
                         '<footer>',
-                        '<span>Copyright ©Since 2018 <a href="//github.com/icret/EasyImages2.0" target="_blank">EasyImage</a> Develop By <a href="//github.com/icret" target="_blank">Icret</a>, Docs By <a href="//docsify.js.org/#/zh-cn/" target="_blank">Docsify</a>.</span>',
+                        '<span>PicLite is based on <a href="//github.com/icret/EasyImages2.0" target="_blank">EasyImages2.0</a>. Docs by <a href="//docsify.js.org/#/zh-cn/" target="_blank">Docsify</a>.</span>',
                         '</footer>'
                     ].join('');
 
@@ -64,8 +64,8 @@
 
                 function (hook, vm) {
                     hook.beforeEach(function (html) {
-                        var url = '//github.com/icret/EasyImages2.0/blob/master/docs/' + vm.route.file;
-                        var editHtml = '<a href="' + url + '" target="_blank">📝 在GitHub上编辑</a>';
+                        var url = '//github.com/Lau0x/easyimage/blob/main/docs/' + vm.route.file;
+                        var editHtml = '<a href="' + url + '" target="_blank">在 GitHub 上编辑</a>';
 
                         return (html + '<br/><br/><br/><br/><br/>' + editHtml);
                     });

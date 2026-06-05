@@ -188,14 +188,14 @@ if ($config['ad_top']) echo $config['ad_top_info'];
     <div class="col-md-6" style="padding-bottom: 10px;">
         <div class="input-group">
             <span class="input-group-addon"><i class="icon icon-code"></i> MarkDown</span>
-            <input type="text" class="form-control" id="markdown" value="![简单图床 - EasyImage](<?php echo easyimage_info_html($img_url); ?>)">
+            <input type="text" class="form-control" id="markdown" value="![PicLite](<?php echo easyimage_info_html($img_url); ?>)">
             <span class="input-group-btn"><button class="btn btn-default btnMarkDown" onclick="uploadCopy('markdown','.btnMarkDown')" type="button">复制</button></span>
         </div>
     </div>
     <div class="col-md-6" style="padding-bottom: 10px;">
         <div class="input-group">
             <span class="input-group-addon"><i class="icon icon-html5"></i> HTML&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <input type="text" class="form-control" id="html" value='<img src="<?php echo easyimage_info_html($img_url); ?>" alt="简单图床 - EasyImage" />'>
+            <input type="text" class="form-control" id="html" value='<img src="<?php echo easyimage_info_html($img_url); ?>" alt="PicLite" />'>
             <span class="input-group-btn"><button class="btn btn-default btnHtml" onclick="uploadCopy('html','.btnHtml')" type="button">复制</button></span>
         </div>
     </div>

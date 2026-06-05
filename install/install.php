@@ -18,11 +18,11 @@ $installTokenRequired = easyimage_install_token_required();
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>EasyIamge 2.0 即将完成安装!</title>
+    <title>PicLite 即将完成安装!</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="EasyIamge 2.0 即将完成安装!" />
-    <meta name="description" content="EasyIamge 2.0 即将完成安装!" />
+    <meta name="keywords" content="PicLite 即将完成安装!" />
+    <meta name="description" content="PicLite 即将完成安装!" />
     <link rel="shortcut icon" href="./../favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="./../public/static/zui/css/zui.min.css?v1.10.0">
     <link rel="stylesheet" href="./../public/static/nprogress/nprogress.min.css?v1.10.0">
@@ -49,7 +49,7 @@ $installTokenRequired = easyimage_install_token_required();
 
 <body class="container">
     <!-- install header html end -->
-    <h1 class="header-dividing" style="text-align:center">EasyIamge 2.0 网站基础配置</h1>
+    <h1 class="header-dividing" style="text-align:center">PicLite 网站基础配置</h1>
     <div class="col-md-10 col-md-offset-2" style="text-align: center;">
         <form class="form-horizontal" action="./contorl.php" method="post">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(easyimage_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
@@ -188,7 +188,7 @@ $installTokenRequired = easyimage_install_token_required();
             <!-- 对话框触发按钮 -->
             <a href="#" data-position="center" data-moveable="inside" data-moveable="true" data-toggle="modal" data-target="#myModal"><i class="icon icon-qrcode"></i>二维码 </a>
         </div>
-        <?php echo 'Copyright © 2018' . date('-Y'); ?> <a href="https://png.cm" target="_blank">EasyImage</a> By Icret Version:<a href="https://github.com/icret/EasyImages2.0" target="_blank"> <?php echo APP_VERSION; ?></a>
+        <?php echo 'Copyright © 2018' . date('-Y'); ?> <a href="https://github.com/Lau0x/easyimage" target="_blank">PicLite</a> · Forked from <a href="https://github.com/icret/EasyImages2.0" target="_blank">EasyImages2.0</a> Version:<a href="https://github.com/Lau0x/easyimage" target="_blank"> <?php echo APP_VERSION; ?></a>
     </footer>
 </body>
 

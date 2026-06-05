@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="renderer" content="webkit" />
 	<meta name="force-rendering" content="webkit" />
-	<meta name="author" content="Icret EasyImage2.0">
+		<meta name="author" content="PicLite">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="referrer" content="same-origin">
 	<meta name="csrf-token" content="<?php echo htmlspecialchars(easyimage_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">

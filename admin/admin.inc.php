@@ -327,7 +327,7 @@ auto_delete(); //定时删除
                 <div class="form-group col-md-12">
                     <div class="form-group col-md-1">
                         <label data-toggle="tooltip" title="前后需加'/'">存储目录</label>
-                        <input type="text" class="form-control" name="path" required="required" value="<?php echo $config['path']; ?>" onkeyup="this.value=this.value.replace(/\s/g,'')" title="可根据Apache/Nginx配置安全,参考: https://blog.png.cm/981.html 或 README.md">
+                        <input type="text" class="form-control" name="path" required="required" value="<?php echo $config['path']; ?>" onkeyup="this.value=this.value.replace(/\s/g,'')" title="可根据 Apache/Nginx 配置安全,参考 README.md">
                     </div>
                     <div class="form-group col-md-2">
                         <label for="storage_path" data-toggle="tooltip" title="图片的分类目录<br>更改会导致广场无法使用<br>非必要不要修改,末尾需要加'/' <br />PHP date() 函数参考">存储分类路径 <a href="https://www.runoob.com/php/php-date.html" target="_blank"><i class="icon icon-external-link"></i></a></label>
@@ -970,19 +970,18 @@ auto_delete(); //定时删除
                 <p class="text-ellipsis">Browser: <?php echo $_SERVER['HTTP_USER_AGENT']; ?></p>
                 <h5>图床信息</h5>
                 <hr />
-                <h6>API 插件</h6>
+                <h6>API 工具</h6>
                 <a href="https://microsoftedge.microsoft.com/addons/detail/%E7%AE%80%E5%8D%95%E5%9B%BE%E5%BA%8A-edge-version/hdafcoenpmebcjjcccojdlhfnndelefk" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="浏览器插件">Edge</span></a>
                 <a href="https://github.com/icret/EasyImage-Browser-Extension" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="浏览器插件">Chrome</span></a>
-                <a href="https://icret.github.io/EasyImages2.0/#/./使用ShareX上传" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用ShareX上传">ShareX</span></a>
-                <a href="https://icret.github.io/EasyImages2.0/#/./使用PicGo上传" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用PicGo上传">PicGo</span></a>
+                <a href="../docs/#/./使用ShareX上传" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用ShareX上传">ShareX</span></a>
+                <a href="../docs/#/./使用PicGo上传" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用PicGo上传">PicGo</span></a>
                 <h6>开发支持</h6>
                 <p>
-                    <a href="https://png.cm/?demo" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="演示地址"><i class="icon icon-external-link"></i> Demo</span></a>
-                    <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://icret.github.io/EasyImages2.0/#/'; ?>" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用手册"><i class="icon icon-book"></i> Manual</span></a>
-                    <a href="https://t.me/Easy_Image" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="EasyImage Telegram Group"><i class="icon icon-comments-alt"></i> Telegram</span></a>
-                    <a href="https://github.com/icret/EasyImages2.0/discussions" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="GitHub 社区"><i class="icon icon-comments-alt"></i> Discuss</span></a>
+                    <a href="https://github.com/Lau0x/easyimage" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="PicLite GitHub"><i class="icon icon-github"></i> GitHub</span></a>
+                    <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://github.com/Lau0x/easyimage#readme'; ?>" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="使用手册"><i class="icon icon-book"></i> Manual</span></a>
+                    <a href="https://github.com/Lau0x/easyimage/issues" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="问题反馈"><i class="icon icon-comments-alt"></i> Issues</span></a>
+                    <a href="https://github.com/icret/EasyImages2.0" target="_blank"><span class="label label-badge label-primary" data-toggle="tooltip" title="上游项目"><i class="icon icon-heart"></i> Upstream</span></a>
                     <span data-toggle="tooltip" title="当前版本"><button type="button" class="btn btn-sm btn-primary label label-badge label-primary" data-toggle="modal" data-moveable="true" ata-size="sm" data-scroll-inside="true" data-icon="heart" data-title="当前版本更新日志" data-custom="<pre style='background-color: rgba(0, 0, 0, 0);border-color:rgba(0, 0, 0, 0);'><?php echo getVersion('name') . '<br/><br/>' . getVersion('body'); ?></pre>"><i class="icon icon-github"></i> <?php echo APP_VERSION; ?></button></span>
-                    <span data-toggle="tooltip" title="您的赞美是我开发的动力!"><button type="button" class="btn btn-sm btn-danger label label-badge label-danger" data-toggle="modal" data-moveable="true" data-size="sm" data-icon="heart" data-title="您的赞美是我开发的动力!" data-custom="<ul class='nav nav-tabs'><li class='active'><a data-tab href='#wechat'><i class='icon icon-wechat' style='color:#329d38;'> 微信</i></a></li><li><a data-tab href='#alipay'><i class='icon icon-zhifubao-square' style='color:#1970fc;'> 支付宝</i></a></li></ul><div class='tab-content'><div class='tab-pane active' id='wechat'><img src='../public/images/wechat.jpg'></div><div class='tab-pane' id='alipay'><img src='../public/images/alipay.jpg'></div></div>"><i class="icon icon-yen"></i><small>打赏开发者</small></button></span>
                 </p>
                 <h6>程序依赖</h6>
                 <p>
@@ -999,9 +998,9 @@ auto_delete(); //定时删除
                     <?php else : ?>
                         <span class="label label-badge label-primary" data-toggle="tooltip" title="监黄 moderatecontent<br/>已填写">Moderatecontent</span>
                     <?php endif; ?>
-                    <a href="https://github.com/icret/EasyImages2.0/blob/master/LICENSE" target="_blank"><span class="label label-badge" data-toggle="tooltip" title="开源许可证">GPL-2.0</span></a>
+                    <a href="https://github.com/Lau0x/easyimage/blob/main/LICENSE" target="_blank"><span class="label label-badge" data-toggle="tooltip" title="开源许可证">GPL-2.0</span></a>
                 </p>
-                <p class="text-muted"><i class="icon icon-certificate"> EasyImage2.0简单图床构建于众多优秀的开源项目之上, 非常感谢这些项目!</i></p>
+                <p class="text-muted"><i class="icon icon-certificate"> PicLite 基于 EasyImages2.0 继续维护, 感谢上游项目和依赖项目。</i></p>
             </div>
             <div class="collapse" id="Ip2Region">
                 <div class="bg-primary with-padding">
@@ -1018,9 +1017,9 @@ auto_delete(); //定时删除
                 <div class="bg-warning with-padding hidden-xs">
                     <h5 class="header-dividing"><span class="label label-success">New</span> <?php echo getVersion('name'); ?></h5>
                     <pre style="background-color: rgba(0, 0, 0, 0);border-color:rgba(0, 0, 0, 0);">更新内容: <br /><?php echo getVersion('body'); ?></pre>
-                    <h6>* 更新日期: <?php echo getVersion('created_at'); ?> 下载新版本上传至网站升级 <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://icret.github.io/EasyImages2.0/#/'; ?>" target="_blank" data-toggle="tooltip" title="升级方法"><i class="icon icon-question"></i></a> 然后点击更新版本号。</h6>
+                    <h6>* 更新日期: <?php echo getVersion('created_at'); ?> 下载新版本上传至网站升级 <a href="<?php echo is_file(APP_ROOT . '/docs/index.html') ?  '../docs' : 'https://github.com/Lau0x/easyimage#readme'; ?>" target="_blank" data-toggle="tooltip" title="升级方法"><i class="icon icon-question"></i></a> 然后点击更新版本号。</h6>
                     <div class="btn-group">
-                        <a class="btn btn-mini btn-primary" href="https://github.com/icret/EasyImages2.0/releases" target="_blank" data-toggle="tooltip" title="Releases Info">Github</a>
+                        <a class="btn btn-mini btn-primary" href="https://github.com/Lau0x/easyimage/releases" target="_blank" data-toggle="tooltip" title="Releases Info">Github</a>
                         <a class="btn btn-mini btn-primary" href="<?php echo getVersion('zipball_url'); ?>" target="_blank" data-toggle="tooltip" title="① 下载后上传至网站更新">下载新版本</a>
                         <a class="btn btn-mini btn-danger" href="#" id="post" onclick="ajax_post('/admin/logs/version/version.json','del_version_file')" data-toggle="tooltip" title="② 升级后获取新的版本信息">更新版本号</a>
                     </div>

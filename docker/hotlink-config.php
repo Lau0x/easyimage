@@ -52,7 +52,7 @@ $lines[] = '</Directory>';
 file_put_contents($confFile, implode(PHP_EOL, $lines) . PHP_EOL);
 
 if (empty($patterns)) {
-    fwrite(STDERR, "EasyImage hotlink protection enabled without allowed domains.\n");
+    fwrite(STDERR, "PicLite hotlink protection enabled without allowed domains.\n");
 } else {
-    fwrite(STDOUT, "EasyImage hotlink protection enabled for: " . implode(', ', array_keys($patterns)) . "\n");
+    fwrite(STDOUT, "PicLite hotlink protection enabled for: " . implode(', ', array_keys($patterns)) . "\n");
 }

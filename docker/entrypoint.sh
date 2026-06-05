@@ -28,7 +28,7 @@ elif [ -n "${EASYIMAGE_INSTALL_TOKEN:-}" ] || [ ! -f /var/www/html/config/instal
     install_token="$(php -r 'echo bin2hex(random_bytes(16));')"
   fi
   printf '%s' "$install_token" > /var/www/html/config/install.token
-  echo "EasyImage install token: $install_token"
+  echo "PicLite install token: $install_token"
 fi
 
 php /var/www/html/docker/hotlink-config.php

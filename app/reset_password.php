@@ -18,7 +18,7 @@ if (isset($_POST['password'])) {
             <div class="form-group">
                 <label for="password" class="col-sm-2">要加密的密码</label>
                 <div class="col-md-6 col-sm-10">
-                    <input type="text" class="form-control" id="password" name="password" value="<?php echo $value; ?>" required placeholder="eg: EasyImage2.0" onkeyup="this.value=this.value.trim()">
+                    <input type="text" class="form-control" id="password" name="password" value="<?php echo $value; ?>" required placeholder="eg: PicLite" onkeyup="this.value=this.value.trim()">
                 </div>
             </div>
             <div class="form-group">

@@ -2,12 +2,12 @@
 2. 创建自定义图床并按照截图填写
 3. 返回uPic主菜单栏, 选择默认上传为自定义图床
 
-![EasyImage简单图床使用uPic上传图片](images/uPic1.avif)
+![PicLite 使用 uPic 上传图片](images/uPic1.avif)
 
-![EasyImage简单图床使用uPic上传图片](images/uPic.avif)
+![PicLite 使用 uPic 上传图片](images/uPic.avif)
 
 ```uPic
-API地址:https://png.cm/api/index.php // 输入你网站api地址
+API地址:https://example.com/api/index.php // 输入你网站api地址
 请求方式: POST
 文件字段名: image
 添加其他字段：

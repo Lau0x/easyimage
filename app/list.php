@@ -80,7 +80,7 @@ function easyimage_list_js($value)
             ?>
                 <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                   <div class="card">
-                    <li><img src="<?php static_cdn(); ?>/public/images/loading.svg" data-image="<?php echo easyimage_list_html($thumbUrl); ?>" data-original="<?php echo easyimage_list_html($imgUrl); ?>" alt="简单图床-EasyImage" onerror="this.onerror=null;this.src=this.getAttribute('data-original') || '/public/images/404.png';"></li>
+                    <li><img src="<?php static_cdn(); ?>/public/images/loading.svg" data-image="<?php echo easyimage_list_html($thumbUrl); ?>" data-original="<?php echo easyimage_list_html($imgUrl); ?>" alt="PicLite" onerror="this.onerror=null;this.src=this.getAttribute('data-original') || '/public/images/404.png';"></li>
                     <div class="bottom-bar">
                       <a href="<?php echo easyimage_list_html($linkUrl); ?>" target="_blank"><i class="icon icon-picture" data-toggle="tooltip" title="打开" style="margin-left:10px;"></i></a>
                       <a href="#" class="copy" data-clipboard-text="<?php echo easyimage_list_html($linkUrl); ?>" data-toggle="tooltip" title="复制链接" style="margin-left:10px;"><i class="icon icon-copy"></i></a>

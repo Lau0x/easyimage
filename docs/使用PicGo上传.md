@@ -4,10 +4,10 @@
 4. 登录图床后台->图床安全->高级设置->开启API上传
 
 
-![EasyImage简单图床使用PicGo上传图片](images/4128197507.png)
+![PicLite 使用 PicGo 上传图片](images/4128197507.png)
 
 ```PicGo
-API地址:https://png.cm/api/index.php // 输入你网站api地址
+API地址:https://example.com/api/index.php // 输入你网站api地址
 POST参数名: image
 JSON路径: url
 自定义Body: {"token":"YOUR_API_TOKEN"} // 这里输入你网站生成的token

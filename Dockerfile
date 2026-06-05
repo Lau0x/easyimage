@@ -1,7 +1,8 @@
 FROM php:8.3-apache
 
 LABEL org.opencontainers.image.source="https://github.com/Lau0x/easyimage" \
-      org.opencontainers.image.description="Lightweight no-database EasyImage fork with Docker deployment" \
+      org.opencontainers.image.title="PicLite" \
+      org.opencontainers.image.description="Lightweight no-database image host with Docker deployment" \
       org.opencontainers.image.licenses="GPL-2.0"
 
 RUN set -eux; \

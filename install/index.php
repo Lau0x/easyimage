@@ -45,11 +45,11 @@ function checkPASS($name)
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>EasyIamge 2.0 安装环境检测</title>
+    <title>PicLite 安装环境检测</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="EasyIamge 2.0 安装环境检测" />
-    <meta name="description" content="EasyIamge 2.0 安装环境检测" />
+    <meta name="keywords" content="PicLite 安装环境检测" />
+    <meta name="description" content="PicLite 安装环境检测" />
     <link rel="stylesheet" rel="shortcut icon" href="./../favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="./../public/static/zui/css/zui.min.css?v1.10.0">
     <link rel="stylesheet" href="./../public/static/nprogress/nprogress.min.css?v1.10.0">
@@ -62,7 +62,7 @@ function checkPASS($name)
 <body class="container">
     <!-- install header html end -->
 
-    <h1 class="header-dividing" style="text-align:center">EasyIamge 2.0 安装环境检测</h1>
+    <h1 class="header-dividing" style="text-align:center">PicLite 安装环境检测</h1>
     <table class="table table-hover table-bordered">
         <thead>
             <tr>
@@ -190,8 +190,8 @@ function checkPASS($name)
                 <i class="icon icon-qrcode"></i>二维码 </a>
         </div>
         <?php echo 'Copyright © 2018-' . date('Y'); ?>
-        <a href="https://png.cm/" target="_blank">EasyImage</a> By
-        <a href="https://blog.png.cm/902.html" target="_blank">Icret</a> Version:<a href="https://github.com/icret/EasyImages2.0" target="_blank"><?php echo APP_VERSION; ?></a>
+        <a href="https://github.com/Lau0x/easyimage" target="_blank">PicLite</a> · Forked from
+        <a href="https://github.com/icret/EasyImages2.0" target="_blank">EasyImages2.0</a> Version:<a href="https://github.com/Lau0x/easyimage" target="_blank"><?php echo APP_VERSION; ?></a>
     </footer>
 </body>
 

@@ -5,8 +5,8 @@
         "code":200,
         "url":"https:\/\/i2.100024.xyz\/2023\/01\/24\/10gwv0y-0.webp",
         "srcName":"195124",
-        "thumb":"https:\/\/png.cm\/application\/thumb.php?img=\/i\/2023\/01\/24\/10gwv0y-0.webp",
-        "del":"https:\/\/png.cm\/application\/del.php?hash=bW8vWG4vcG8yM2pLQzRJUGI0dHlTZkN4L2grVmtwUTFhd1A4czJsbHlMST0="
+        "thumb":"https:\/\/example.com\/app\/thumb.php?img=\/i\/2023\/01\/24\/10gwv0y-0.webp",
+        "del":"https:\/\/example.com\/app\/del.php?hash=bW8vWG4vcG8yM2pLQzRJUGI0dHlTZkN4L2grVmtwUTFhd1A4czJsbHlMST0="
     }
 ```
 - 返回示例解释

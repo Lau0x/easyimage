@@ -8,10 +8,10 @@
 ```ShareX
 {
   "Version": "15.0.0",
-  "Name": "简单图床API图片上传",
+  "Name": "PicLite API 图片上传",
   "DestinationType": "ImageUploader",
   "RequestMethod": "POST",
-  "RequestURL": "https://png.cm/api/index.php",
+  "RequestURL": "https://example.com/api/index.php",
   "Body": "MultipartFormData",
   "Arguments": {
     "token": "YOUR_API_TOKEN"

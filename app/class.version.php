@@ -3,7 +3,7 @@
 /**
  * @author Icret
  * 获取GitHub最新版本号
- * EasyImage2.0 简单图床 创建时间: 2021-5-10 14:17:25
+ * PicLite version checker, based on EasyImages2.0
  * 修改时间: 2023-02-10 11:23:30
  * @param int 864000 10天的unix时间,既每隔十天获取一次版本
  */

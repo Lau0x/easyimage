@@ -2,20 +2,17 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+PicLite is maintained from the latest `main` branch and published releases.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version | Supported |
+| ------- | --------- |
+| Latest release | Yes |
+| Older releases | Best effort |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Please report security issues through GitHub:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+- https://github.com/Lau0x/easyimage/issues
+
+When reporting, include the affected version or commit, deployment method, reproduction steps, and any relevant logs. Please avoid posting exploit details publicly if the issue can expose private files, credentials, or uploaded content.

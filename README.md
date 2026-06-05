@@ -1,27 +1,26 @@
-## EasyImage2.0 简单图床
+## PicLite
 
-[![EasyImage2.0 GitHub's stars](https://img.shields.io/github/stars/Lau0x/easyimage?style=social)](https://github.com/Lau0x/easyimage/stargazers)
-[![EasyImage2.0 GitHub's forks](https://img.shields.io/github/forks/Lau0x/easyimage?style=social)](https://github.com/Lau0x/easyimage/network/members)
-[![PHP](https://img.shields.io/badge/php-5.6%20--%208.0-blue.svg)](http://php.net)
+[![PHP](https://img.shields.io/badge/php-8.3%20docker-blue.svg)](https://www.php.net/)
 [![Release](https://img.shields.io/github/v/release/Lau0x/easyimage)](https://github.com/Lau0x/easyimage/releases)
-[![jsdelivr](https://data.jsdelivr.com/v1/package/gh/Lau0x/easyimage/badge)](https://cdn.jsdelivr.net/gh/Lau0x/easyimage/)
-[![License](https://img.shields.io/badge/license-GPL_V2.0-yellowgreen.svg)](https://github.com/Lau0x/easyimage/blob/main/LICENSE)
-[![QQ group](https://pub.idqqimg.com/wpa/images/group.png)](https://jq.qq.com/?_wv=1027&k=jfXRHU8Y)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io%2Flau0x%2Feasyimage-blue)](https://github.com/Lau0x/easyimage/pkgs/container/easyimage)
+[![License](https://img.shields.io/badge/license-GPL--2.0-yellowgreen.svg)](https://github.com/Lau0x/easyimage/blob/main/LICENSE)
 
-[演示](https://png.cm/) · [手册](https://icret.github.io/EasyImages2.0/#/) · [反馈](https://github.com/Lau0x/easyimage/issues) · [Telegram](https://t.me/Easy_Image) - 插件: [Chrome](/docs/Chrome插件.md) · [Edge](/docs/Edge插件.md) · [PicGo](/docs/使用PicGo上传.md) · [ShareX](/docs/使用ShareX上传.md) · [Docker](/docs/三方安装指南.md)
+PicLite 是一个轻量、无数据库的自托管图床，适合个人、团队内网和小型公开站点使用。
 
-目录: [安装](/docs/安装图床.md) | [安全](/docs/安全配置.md) | [API](/docs/API.md) | [鉴黄](/docs/鉴黄.md) | [升级](/docs/图床更新升级.md) | [常见问题](/docs/常见问题.md) | [环境/兼容](#环境要求) | [更新日志](/docs/update.md) | [打赏开发者](/docs/打赏开发者.md) | [鸣谢](#鸣谢) | [许可证](#开源许可) 
+本项目基于 [EasyImages2.0](https://github.com/icret/EasyImages2.0) 继续维护，保留原项目的无数据库结构和图片路径兼容性，同时补上更适合当前部署环境的 Docker、安全默认值和发布流程。
 
-> 始于2018年7月，支持多文件上传,简单无数据库,返回图片url,markdown,bbscode,html的一款图床程序
-演示地址：[https://png.cm/](https://png.cm/) 
-之前一直用的图床程序是:[PHP多图长传程序2.4.3](https://www.jb51.net/codes/40544.html)
-由于版本过老并且使用falsh上传，在当前html5流行大势所趋下，遂利用基础知识新写了一个以html5为默认上传并且支持flash,向下兼容至IE9。
-***本程序环境要求极低，适用于单一场景（游客上传）和个人使用，不适于多用户复杂场景***
->本人善写bug 发现bug可提交 [issues](https://github.com/Lau0x/easyimage/issues) 追求稳定请下载 [稳定版](https://github.com/Lau0x/easyimage/releases)
+## 现在的重点
+
+- 无数据库：图片、配置和日志都在文件系统里，迁移时直接备份目录。
+- Docker 优先：提供 `linux/amd64` 和 `linux/arm64` 预构建镜像。
+- 默认安全：安装 Token、后台登录防爆破、上传目录脚本阻断、配置目录访问阻断。
+- 可选防护：防盗链、上传限速、游客每日上传限制、IP 黑白名单。
+- 常用输出：直链、Markdown、BBCode、HTML、缩略图。
+- 兼容生态：保留 PicGo、ShareX、uPic、浏览器插件等上传方式。
 
 ## Docker 快速部署
 
-使用预构建镜像：
+使用仓库内的 `docker-compose.yml`：
 
 ```sh
 git clone https://github.com/Lau0x/easyimage.git
@@ -30,14 +29,20 @@ docker compose pull
 docker compose up -d
 ```
 
-启动后访问 `http://localhost:8080/install` 完成安装。首次安装需要填写安装 Token，可用 `docker compose logs easyimage` 查看。默认镜像是 `ghcr.io/lau0x/easyimage:latest`，支持 `linux/amd64` 和 `linux/arm64`。默认端口是 `8080`，需要改端口时把 `docker-compose.yml` 里的 `8080:80` 改成类似 `8088:80` 即可。
-
-也可以不 clone 仓库，直接拉镜像运行：
+启动后访问 `http://localhost:8080/install` 完成安装。首次安装需要填写安装 Token，可用下面命令查看：
 
 ```sh
-mkdir -p easyimage/i easyimage/config easyimage/admin/logs
-cd easyimage
-docker run -d --name easyimage -p 8080:80 \
+docker compose logs easyimage
+```
+
+默认镜像仍是 `ghcr.io/lau0x/easyimage:latest`。镜像名和 `EASYIMAGE_*` 环境变量暂时保留，方便已有部署平滑迁移；对外名称从现在开始使用 PicLite。
+
+也可以不 clone 仓库，直接运行镜像：
+
+```sh
+mkdir -p piclite/i piclite/config piclite/admin/logs
+cd piclite
+docker run -d --name piclite -p 8080:80 \
   -e TZ=Asia/Shanghai \
   -v "$PWD/i:/var/www/html/i" \
   -v "$PWD/config:/var/www/html/config" \
@@ -45,9 +50,13 @@ docker run -d --name easyimage -p 8080:80 \
   ghcr.io/lau0x/easyimage:latest
 ```
 
-图片、配置和日志默认保存在本机 `i/`、`config/`、`admin/logs/`，迁移时备份这三个目录即可；项目仍然是无数据库部署。
+需要迁移时，备份这三个目录即可：
 
-可选开启防盗链：
+- `i/`
+- `config/`
+- `admin/logs/`
+
+## 可选防盗链
 
 ```yaml
 environment:
@@ -59,58 +68,41 @@ environment:
 
 `EASYIMAGE_HOTLINK` 默认关闭。开启后只允许配置域名引用 `i/` 目录下的图片；`EASYIMAGE_HOTLINK_ALLOW_EMPTY` 为 `1` 时允许直接打开图片或无来源客户端访问。
 
-## 特点
+## 裸机部署
 
-* [x] 支持API
-* [x] 支持仅登录后上传
-* [x] 支持设置图片质量
-* [x] 支持压缩图片大小
-* [x] 支持文字/图片水印
-* [x] 支持设置图片指定宽/高
-* [x] 支持上传图片转换为指定格式
-* [x] 支持限制最低宽度/高度上传
-* [x] 支持上传其他文件格式
-* [x] 在线管理图片
-* [x] 支持网站统计
-* [x] 支持设置广告
-* [x] 支持图片鉴黄
-* [x] 支持自定义代码
-* [x] 支持上传IP黑白名单
-* [x] 支持上传日志IP定位
-* [x] 支持限制日上传次数
-* [x] 支持创建仅上传用户
-* [x] 对于安装环境要求极低
-* [x] 对于服务器性能要求极低
-* [x] 理论上[支持所有常见格式](/docs/其他格式.md)
-* [x] 更多功能支持请安装尝试···
+推荐使用 Docker。裸机部署请参考：
 
- ## 界面演示
- 
- ![简单图床 - 上传界面](./docs/images/README/674074848.png)
- ![简单图床 - 广场界面](./docs/images/README/3053540273.png)
- ![简单图床 - 后台界面](./docs/images/README/2657944724.png)
- ![简单图床 - 统计界面](./docs/images/README/1305032567.png)
- ![简单图床 - 图片信息](./docs/images/README/info.png)
- ![简单图床 - 上传日志](./docs/images/README/log.png)
+- [安装图床](./docs/安装图床.md)
+- [安全配置](./docs/安全配置.md)
+- [API](./docs/API.md)
+- [常见问题](./docs/常见问题.md)
 
-## 环境要求
-> 推荐环境：Nginx + PHP≥7.0 + linux
+## 常用功能
 
-- ##### 兼容
+- 多文件拖拽上传
+- 图片广场和历史记录
+- API Token 上传
+- 管理员和上传者账号
+- 自定义上传目录
+- 缩略图生成
+- 图片压缩和格式转换
+- 文字/图片水印
+- 图片鉴黄接口
+- 上传日志和统计
+- 加密删除链接
 
- >最低`PHP 5.6`,推荐`PHP≥7.0`及以上版本，需要PHP支持`Fileinfo,iconv,zip,mbstring,openssl`扩展,如果缺失会导致无法上传/删除图片
- 文件上传视图提供文件列表管理和文件批量上传功能，允许拖拽（需要`HTML5`支持）来添加上传文件，支持上传大图片，优先使用`HTML5`旧得浏览器自动使用`Flash和Silverlight`的方式兼容
+## 兼容说明
 
-## 鸣谢
- 
-- [verot](https://github.com/verot/class.upload.php "verot" )
-- [ZUI](https://github.com/easysoft/zui/tree/zui1 "ZUI" )
-  
+为了降低迁移成本，以下内容暂时保持原样：
+
+- 默认上传目录仍是 `/i/`
+- Docker 镜像仍是 `ghcr.io/lau0x/easyimage`
+- Compose 服务名仍是 `easyimage`
+- 部分内部函数、静态文件名和配置键仍包含 `easyimage`
+
+这些属于兼容层，不代表对外品牌名。后续如新增镜像别名，会先保留旧镜像一段时间。
+
 ## 开源许可
 
- - [GPL-2.0](https://github.com/Lau0x/easyimage/blob/main/LICENSE)
- - Copyright © 2018 EasyImage Developer By [Icret](https://github.com/icret)
- 
-* have fun!
-
-[![Stargazers over time](https://starchart.cc/Lau0x/easyimage.svg)](https://github.com/Lau0x/easyimage/stargazers)
+- 本项目使用 [GPL-2.0](https://github.com/Lau0x/easyimage/blob/main/LICENSE)。
+- PicLite 基于 [EasyImages2.0](https://github.com/icret/EasyImages2.0) 继续维护，感谢原作者 [Icret](https://github.com/icret) 和上游贡献者。
