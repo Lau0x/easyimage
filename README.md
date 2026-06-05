@@ -47,6 +47,18 @@ docker run -d --name easyimage -p 8080:80 \
 
 图片、配置和日志默认保存在本机 `i/`、`config/`、`admin/logs/`，迁移时备份这三个目录即可；项目仍然是无数据库部署。
 
+可选开启防盗链：
+
+```yaml
+environment:
+  TZ: Asia/Shanghai
+  EASYIMAGE_HOTLINK: "1"
+  EASYIMAGE_HOTLINK_DOMAINS: "example.com,www.example.com"
+  EASYIMAGE_HOTLINK_ALLOW_EMPTY: "1"
+```
+
+`EASYIMAGE_HOTLINK` 默认关闭。开启后只允许配置域名引用 `i/` 目录下的图片；`EASYIMAGE_HOTLINK_ALLOW_EMPTY` 为 `1` 时允许直接打开图片或无来源客户端访问。
+
 ## 特点
 
 * [x] 支持API

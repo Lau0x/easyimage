@@ -29,6 +29,8 @@ elif [ -n "${EASYIMAGE_INSTALL_TOKEN:-}" ] || [ ! -f /var/www/html/config/instal
   echo "EasyImage install token: $install_token"
 fi
 
+php /var/www/html/docker/hotlink-config.php
+
 chown -R www-data:www-data /var/www/html/i /var/www/html/config /var/www/html/admin/logs
 
 exec docker-php-entrypoint "$@"
