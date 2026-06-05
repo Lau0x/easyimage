@@ -11,6 +11,7 @@ if ($state !== 'checked') {
     exit(header("Location:index.php"));
 }
 
+$installTokenRequired = easyimage_install_token_required();
 ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
@@ -51,6 +52,15 @@ if ($state !== 'checked') {
     <h1 class="header-dividing" style="text-align:center">EasyIamge 2.0 网站基础配置</h1>
     <div class="col-md-10 col-md-offset-2" style="text-align: center;">
         <form class="form-horizontal" action="./contorl.php" method="post">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(easyimage_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+            <?php if ($installTokenRequired) : ?>
+            <div class="form-group">
+                <label class="col-sm-2">安装 Token</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="password" class="form-control" name="install_token" required="required" autocomplete="off" placeholder="请查看 Docker 日志中的安装 Token">
+                </div>
+            </div>
+            <?php endif; ?>
             <div class="form-group">
                 <label class="col-sm-2">网站域名,末尾不加"/"</label>
                 <div class="col-md-6 col-sm-10">
@@ -73,20 +83,20 @@ if ($state !== 'checked') {
                 <label class="col-sm-2 ">管理密码</label>
                 <span class="message">请输入8~18位密码</span>
                 <div class="col-md-6 col-sm-10 register">
-                    <input type="text" class="form-control inp" name="password" value="admin@123" required="required" placeholder="请使用英文输入法输入密码并不小于8位数" onkeyup="this.value=this.value.replace(/\s/g,'')">
+                    <input type="password" class="form-control inp" name="password" value="" required="required" autocomplete="new-password" placeholder="请使用英文输入法输入密码并不小于8位数" onkeyup="this.value=this.value.replace(/\s/g,'')">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 ">确认密码</label>
                 <div class="col-md-6 col-sm-10">
-                    <input type="text" class="form-control" name="repassword" value="admin@123" required="required" placeholder="确认密码" onkeyup="this.value=this.value.replace(/\s/g,'')">
+                    <input type="password" class="form-control" name="repassword" value="" required="required" autocomplete="new-password" placeholder="确认密码" onkeyup="this.value=this.value.replace(/\s/g,'')">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="del_extra_files" value="del" checked><span style="font-weight: bold;color:green;" title="删除Github|Gitee下载的多余文件">删除多余文件</span>
+                            <input type="checkbox" name="del_extra_files" value="del"><span style="font-weight: bold;color:green;" title="删除Github|Gitee下载的多余文件">删除多余文件</span>
                         </label>
                         <label>
                             <input type="checkbox" name="del_install" value="del"><span style="font-weight: bold;color:red;">删除安装目录</span>

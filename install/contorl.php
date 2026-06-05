@@ -5,15 +5,27 @@ if (file_exists(APP_ROOT . '/config/install.lock')) {
   exit(header("Location:/../index.php"));
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  exit(header("Location:index.php"));
+}
+
+easyimage_require_csrf();
+
+if (!easyimage_verify_install_token(isset($_POST['install_token']) ? $_POST['install_token'] : '')) {
+  exit('<script>window.alert("安装 Token 错误, 请查看 Docker 日志后重试!");location.href="./index.php";</script>');
+}
+
 if (isset($_POST['password'])) {
-  if ($_POST['password'] === $_POST['repassword']) {
+  if ($_POST['password'] === $_POST['repassword'] && strlen($_POST['password']) >= 8 && strlen($_POST['password']) <= 18) {
 
     $config['password'] = easyimage_hash_password($_POST['password']);
     $config['user'] = $_POST['user'];
   } else {
 
-    exit('<script>window.alert("两次密码不一致请重新输入!");location.href="./index.php";</script>');
+    exit('<script>window.alert("密码长度需为8~18位, 且两次输入必须一致!");location.href="./index.php";</script>');
   }
+} else {
+  exit(header("Location:index.php"));
 }
 
 if (isset($_POST['domain'])) {
@@ -29,6 +41,7 @@ cache_write($config_file, $config);
 
 // 创建安装程序锁
 file_put_contents(APP_ROOT . '/config/install.lock', '安装程序锁定文件。');
+@unlink(APP_ROOT . '/config/install.token');
 
 // 删除安装目录
 if (isset($_POST['del_install'])) {
@@ -47,8 +60,7 @@ if (isset($_POST['del_extra_files'])) {
     try {
       @unlink(APP_ROOT . '/LICENSE');
       @unlink(APP_ROOT . '/README.md');
-      @deldir(APP_ROOT . "/admin/logs");
-      @deldir(APP_ROOT . "/SECURITY.md");
+      @unlink(APP_ROOT . "/SECURITY.md");
       @unlink(APP_ROOT . '/.whitesource');
       @unlink(APP_ROOT . '/CODE_OF_CONDUCT.md');
       @unlink(APP_ROOT . '/config/EasyIamge.lock');

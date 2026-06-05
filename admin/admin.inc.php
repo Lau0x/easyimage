@@ -626,6 +626,7 @@ auto_delete(); //定时删除
                                 <textarea class="form-control" rows="4" name="check_ip_list" data-toggle="tooltip" title="每个IP以英文,结尾 支持IP段 例:123.23.23.44,193.134.*.*" placeholder="每个IP以英文,结尾 支持IP段 例:192.168.1.13,123.23.23.44,193.134.*.*" onkeyup="this.value=this.value.replace(/\s/g,'')"><?php echo $config['check_ip_list']; ?></textarea>
                                 <label class="radio-inline"><input type="radio" name="check_ip_model" value="0" <?php if ($config['check_ip_model'] == 0) echo 'checked'; ?>> 黑名单模式</label>
                                 <label class="radio-inline"><input type="radio" name="check_ip_model" value="1" <?php if ($config['check_ip_model'] == 1) echo 'checked'; ?>> 白名单模式</label>
+                                <input type="text" class="form-control" name="trusted_proxies" value="<?php echo htmlspecialchars(isset($config['trusted_proxies']) ? $config['trusted_proxies'] : '', ENT_QUOTES, 'UTF-8'); ?>" placeholder="可信代理IP, 多个用英文逗号分隔" data-toggle="tooltip" title="只有请求来自这些代理IP时, 才信任 X-Forwarded-For / X-Real-IP。支持CIDR, 例: 172.18.0.1,10.0.0.0/8" onkeyup="this.value=this.value.replace(/\s/g,'')">
                             </div>
                         </div>
                         <div class="col-md-6">

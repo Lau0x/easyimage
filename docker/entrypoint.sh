@@ -17,6 +17,18 @@ else
   [ -f /var/www/html/config/config.guest.php ] || cp /usr/src/easyimage-config/config.guest.php /var/www/html/config/config.guest.php
 fi
 
+if [ -f /var/www/html/config/install.lock ]; then
+  rm -f /var/www/html/config/install.token
+elif [ -n "${EASYIMAGE_INSTALL_TOKEN:-}" ] || [ ! -f /var/www/html/config/install.token ]; then
+  if [ -n "${EASYIMAGE_INSTALL_TOKEN:-}" ]; then
+    install_token="$EASYIMAGE_INSTALL_TOKEN"
+  else
+    install_token="$(php -r 'echo bin2hex(random_bytes(16));')"
+  fi
+  printf '%s' "$install_token" > /var/www/html/config/install.token
+  echo "EasyImage install token: $install_token"
+fi
+
 chown -R www-data:www-data /var/www/html/i /var/www/html/config /var/www/html/admin/logs
 
 exec docker-php-entrypoint "$@"

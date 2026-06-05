@@ -187,6 +187,36 @@ function easyimage_require_csrf($json = false)
     exit('Invalid CSRF token');
 }
 
+function easyimage_install_token()
+{
+    $envToken = getenv('EASYIMAGE_INSTALL_TOKEN');
+    if ($envToken !== false && trim($envToken) !== '') {
+        return trim($envToken);
+    }
+
+    $tokenFile = APP_ROOT . '/config/install.token';
+    if (is_readable($tokenFile)) {
+        return trim((string)file_get_contents($tokenFile));
+    }
+
+    return '';
+}
+
+function easyimage_install_token_required()
+{
+    return easyimage_install_token() !== '';
+}
+
+function easyimage_verify_install_token($token)
+{
+    $knownToken = easyimage_install_token();
+    if ($knownToken === '') {
+        return true;
+    }
+
+    return easyimage_hash_equals($knownToken, trim((string)$token));
+}
+
 
 /**
  * 2023-01-06 校验登录
@@ -1297,10 +1327,92 @@ function writefile($filename, $writetext, $openmod = 'w')
     }
 }
 
+function easyimage_clean_ip($ip)
+{
+    $ip = trim((string)$ip);
+    return filter_var($ip, FILTER_VALIDATE_IP) ? $ip : '';
+}
+
+function easyimage_ip_in_cidr($ip, $cidr)
+{
+    if (strpos($cidr, '/') === false) {
+        return false;
+    }
+
+    list($subnet, $bits) = explode('/', $cidr, 2);
+    $bits = (int)$bits;
+    if ($bits < 0 || $bits > 32) {
+        return false;
+    }
+
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || !filter_var($subnet, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+        return false;
+    }
+
+    $ipLong = ip2long($ip);
+    $subnetLong = ip2long($subnet);
+    $mask = $bits === 0 ? 0 : (-1 << (32 - $bits));
+
+    return ($ipLong & $mask) === ($subnetLong & $mask);
+}
+
+function easyimage_ip_matches($ip, $pattern)
+{
+    $pattern = trim((string)$pattern);
+    if ($pattern === '') {
+        return false;
+    }
+
+    if (strpos($pattern, '/') !== false) {
+        return easyimage_ip_in_cidr($ip, $pattern);
+    }
+
+    return easyimage_clean_ip($pattern) === $ip;
+}
+
+function easyimage_is_trusted_proxy($ip)
+{
+    global $config;
+
+    if (empty($config['trusted_proxies'])) {
+        return false;
+    }
+
+    foreach (explode(',', $config['trusted_proxies']) as $proxy) {
+        if (easyimage_ip_matches($ip, $proxy)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function easyimage_forwarded_ip()
+{
+    $headerValues = array();
+    foreach (array('HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP') as $header) {
+        if (!empty($_SERVER[$header])) {
+            $headerValues[] = $_SERVER[$header];
+        } elseif (getenv($header)) {
+            $headerValues[] = getenv($header);
+        }
+    }
+
+    foreach ($headerValues as $headerValue) {
+        foreach (explode(',', $headerValue) as $ip) {
+            $ip = easyimage_clean_ip($ip);
+            if ($ip !== '') {
+                return $ip;
+            }
+        }
+    }
+
+    return '';
+}
+
 /**
- * 获得用户的真实IP地址
- * 来源：ecshop
- * @return mixed|string string
+ * 获得用户IP地址。只有 REMOTE_ADDR 命中 trusted_proxies 时才信任代理转发头。
+ * @return string
  */
 function real_ip()
 {
@@ -1308,40 +1420,24 @@ function real_ip()
     if ($realip !== NULL) {
         return $realip;
     }
-    if (isset($_SERVER)) {
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            /* 取X-Forwarded-For中第一个非unknown的有效IP字符串 */
-            foreach ($arr as $ip) {
-                $ip = trim($ip);
 
-                if ($ip != 'unknown') {
-                    $realip = $ip;
+    $remoteIp = '';
+    if (isset($_SERVER['REMOTE_ADDR'])) {
+        $remoteIp = $_SERVER['REMOTE_ADDR'];
+    } elseif (getenv('REMOTE_ADDR')) {
+        $remoteIp = getenv('REMOTE_ADDR');
+    }
 
-                    break;
-                }
-            }
-        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            $realip = $_SERVER['HTTP_CLIENT_IP'];
-        } else {
-            if (isset($_SERVER['REMOTE_ADDR'])) {
-                $realip = $_SERVER['REMOTE_ADDR'];
-            } else {
-                $realip = '0.0.0.0';
-            }
-        }
-    } else {
-        if (getenv('HTTP_X_FORWARDED_FOR')) {
-            $realip = getenv('HTTP_X_FORWARDED_FOR');
-        } elseif (getenv('HTTP_CLIENT_IP')) {
-            $realip = getenv('HTTP_CLIENT_IP');
-        } else {
-            $realip = getenv('REMOTE_ADDR');
+    $remoteIp = easyimage_clean_ip($remoteIp);
+    $realip = $remoteIp !== '' ? $remoteIp : '0.0.0.0';
+
+    if ($remoteIp !== '' && easyimage_is_trusted_proxy($remoteIp)) {
+        $forwardedIp = easyimage_forwarded_ip();
+        if ($forwardedIp !== '') {
+            $realip = $forwardedIp;
         }
     }
-    // 使用正则验证IP地址的有效性，防止伪造IP地址进行SQL注入攻击
-    preg_match("/[\d\.]{7,15}/", $realip, $onlineip);
-    $realip = !empty($onlineip[0]) ? $onlineip[0] : '0.0.0.0';
+
     return $realip;
 }
 
@@ -1403,11 +1499,8 @@ function IP_URL_Ping($host, $port, $timeout)
  */
 function privateToken($length = 32)
 {
-    $output = '';
-    for ($a = 0; $a < $length; $a++) {
-        $output .= chr(mt_rand(65, 122)); //生成php随机数
-    }
-    return md5($output);
+    $length = max(16, (int)$length);
+    return substr(bin2hex(easyimage_random_bytes((int)ceil($length / 2))), 0, $length);
 }
 
 /**
