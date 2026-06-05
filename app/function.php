@@ -363,6 +363,112 @@ function easyimage_login_rate_message($remaining)
     return '登录失败过多, 请 ' . $minutes . ' 分钟后再试';
 }
 
+function easyimage_upload_rate_limit_enabled()
+{
+    global $config;
+
+    return isset($config['upload_rate_limit']) && (int)$config['upload_rate_limit'] === 1;
+}
+
+function easyimage_upload_rate_config($key, $default)
+{
+    global $config;
+
+    $value = isset($config[$key]) ? (int)$config[$key] : $default;
+    return $value > 0 ? $value : $default;
+}
+
+function easyimage_upload_rate_default()
+{
+    return array(
+        'count' => 0,
+        'first' => 0
+    );
+}
+
+function easyimage_upload_rate_file($scope = 'web')
+{
+    $ip = real_ip();
+    if ($ip === '') {
+        $ip = 'unknown';
+    }
+
+    $scope = preg_replace('/[^a-z0-9_-]/i', '_', (string)$scope);
+    return APP_ROOT . '/admin/logs/upload-rate/' . hash('sha256', $scope . '|' . $ip) . '.php';
+}
+
+function easyimage_upload_rate_read($scope = 'web')
+{
+    $file = easyimage_upload_rate_file($scope);
+    if (!is_file($file)) {
+        return easyimage_upload_rate_default();
+    }
+
+    $raw = file_get_contents($file);
+    $prefix = '<?php exit; ?>';
+    if (strpos($raw, $prefix) === 0) {
+        $raw = substr($raw, strlen($prefix));
+    }
+
+    $state = json_decode(trim($raw), true);
+    if (!is_array($state)) {
+        return easyimage_upload_rate_default();
+    }
+
+    return array(
+        'count' => isset($state['count']) ? max(0, (int)$state['count']) : 0,
+        'first' => isset($state['first']) ? max(0, (int)$state['first']) : 0
+    );
+}
+
+function easyimage_upload_rate_write($scope, $state)
+{
+    $file = easyimage_upload_rate_file($scope);
+    $dir = dirname($file);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+
+    file_put_contents($file, '<?php exit; ?>' . PHP_EOL . json_encode($state), LOCK_EX);
+}
+
+function easyimage_upload_rate_consume($scope = 'web')
+{
+    if (!easyimage_upload_rate_limit_enabled()) {
+        return array('allowed' => true, 'remaining' => 0);
+    }
+
+    $now = time();
+    $window = easyimage_upload_rate_config('upload_rate_limit_window', 60);
+    $requests = easyimage_upload_rate_config('upload_rate_limit_requests', 60);
+    $state = easyimage_upload_rate_read($scope);
+
+    if ($state['first'] <= 0 || $state['first'] + $window <= $now) {
+        $state = array('count' => 0, 'first' => $now);
+    }
+
+    if ($state['count'] >= $requests) {
+        return array('allowed' => false, 'remaining' => max(1, $state['first'] + $window - $now));
+    }
+
+    $state['count']++;
+    easyimage_upload_rate_write($scope, $state);
+    return array('allowed' => true, 'remaining' => 0);
+}
+
+function easyimage_upload_rate_reset($scope = 'web')
+{
+    $file = easyimage_upload_rate_file($scope);
+    if (is_file($file)) {
+        unlink($file);
+    }
+}
+
+function easyimage_upload_rate_message($remaining)
+{
+    return '上传过于频繁, 请 ' . max(1, (int)$remaining) . ' 秒后再试';
+}
+
 
 /**
  * 2023-01-06 校验登录

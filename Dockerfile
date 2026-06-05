@@ -35,6 +35,7 @@ RUN set -eux; \
         /var/www/html/admin/logs/login-rate \
         /var/www/html/admin/logs/tasks \
         /var/www/html/admin/logs/upload \
+        /var/www/html/admin/logs/upload-rate \
         /var/www/html/admin/logs/version; \
     mkdir -p /usr/src/easyimage-config; \
     cp -a /var/www/html/config/. /usr/src/easyimage-config/; \

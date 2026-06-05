@@ -54,6 +54,8 @@ CONTAINERS="$CONTAINERS $plain_container"
 plain_port="$(container_port "$plain_container")"
 wait_http "http://127.0.0.1:$plain_port/install/index.php"
 docker exec "$plain_container" test -s /var/www/html/config/install.token
+docker exec "$plain_container" test -d /var/www/html/admin/logs/login-rate
+docker exec "$plain_container" test -d /var/www/html/admin/logs/upload-rate
 add_test_files "$plain_container"
 assert_status 403 "http://127.0.0.1:$plain_port/config/config.php"
 assert_status 403 "http://127.0.0.1:$plain_port/i/pwn.php"

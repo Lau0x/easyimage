@@ -683,6 +683,13 @@ auto_delete(); //定时删除
                             </div>
                         </div>
                         <div class="col-md-2">
+                            <div class="switch switch-inline" data-toggle="tooltip" title="按来源IP限制网页和API上传频率">
+                                <input type="hidden" name="upload_rate_limit" value="0">
+                                <input type="checkbox" name="upload_rate_limit" value="1" <?php if (isset($config['upload_rate_limit']) && $config['upload_rate_limit']) echo 'checked="checked"'; ?>>
+                                <label style="font-weight: bold">上传限速</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
                             <div class="switch switch-inline" data-toggle="tooltip" title="以上传用户的Token ID创建目录">
                                 <input type="hidden" name="token_path_status" value="0">
                                 <input type="checkbox" name="token_path_status" value="1" <?php if ($config['token_path_status']) echo 'checked="checked"'; ?>>
@@ -858,6 +865,24 @@ auto_delete(); //定时删除
                                     <span class="input-group-addon">游客上传限制</span>
                                     <input class="form-control" type="number" name="ip_upload_counts" min="0" value="<?php echo $config['ip_upload_counts']; ?>" required="required">
                                     <span class="input-group-addon">张</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="input-group" data-toggle="tooltip" title="上传限速开启后生效, 默认60次">
+                                    <span class="input-group-addon">上传限速次数</span>
+                                    <input class="form-control" type="number" name="upload_rate_limit_requests" min="1" value="<?php echo isset($config['upload_rate_limit_requests']) ? (int)$config['upload_rate_limit_requests'] : 60; ?>" required="required">
+                                    <span class="input-group-addon">次</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="input-group" data-toggle="tooltip" title="上传限速开启后生效, 默认60秒">
+                                    <span class="input-group-addon">上传限速窗口</span>
+                                    <input class="form-control" type="number" name="upload_rate_limit_window" min="1" value="<?php echo isset($config['upload_rate_limit_window']) ? (int)$config['upload_rate_limit_window'] : 60; ?>" required="required">
+                                    <span class="input-group-addon">秒</span>
                                 </div>
                             </div>
                         </div>

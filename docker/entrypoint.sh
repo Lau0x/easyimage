@@ -9,6 +9,7 @@ mkdir -p \
   /var/www/html/admin/logs/login-rate \
   /var/www/html/admin/logs/tasks \
   /var/www/html/admin/logs/upload \
+  /var/www/html/admin/logs/upload-rate \
   /var/www/html/admin/logs/version
 
 if [ ! -f /var/www/html/config/config.php ]; then

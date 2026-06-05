@@ -42,6 +42,15 @@ if ($config['check_ip']) {
     }
 }
 
+$uploadRate = easyimage_upload_rate_consume('api');
+if (!$uploadRate['allowed']) {
+    exit(json_encode(array(
+        "result"  => "failed",
+        "code"    => 429,
+        "message" => easyimage_upload_rate_message($uploadRate['remaining']),
+    ), JSON_UNESCAPED_UNICODE));
+}
+
 // 获取Token并过滤非字母数字, 删除空格
 $token = isset($_POST['token']) ? preg_replace('/[\W]/', '', $_POST['token']) : '';
 

@@ -61,6 +61,18 @@ if ($config['check_ip']) {
     }
 }
 
+$uploadRate = easyimage_upload_rate_consume('web');
+if (!$uploadRate['allowed']) {
+    exit(json_encode(
+        array(
+            "result"  => "failed",
+            "code"    => 429,
+            "message" => easyimage_upload_rate_message($uploadRate['remaining']),
+        ),
+        JSON_UNESCAPED_UNICODE
+    ));
+}
+
 // 根据IP限制游客每日上传数量
 if ($config['ip_upload_counts'] > 0 && !is_who_login('status')) {
     if (false === get_ip_upload_log_counts(real_ip())) {
