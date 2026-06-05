@@ -1,67 +1,155 @@
-    /* 返回顶部 */
-    .btn-back-to-top {
-        padding: 0.5rem 1rem;
-        position: fixed;
-        right: 2rem;
-        bottom: 1rem;
-        z-index: 2;
-        -webkit-transition: -webkit-transform 0.2s ease;
-        transition: transform 0.2s ease;
-        -webkit-transform: translateY(200%);
-        transform: translateY(200%);
-    }
+/* Gallery and history surfaces. Kept as EasyImage.css for legacy references. */
 
-    .btn-back-to-top.scrolled {
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
+.btn-back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 68px;
+    z-index: 20;
+    padding: 8px 12px;
+    border-radius: 999px;
+    box-shadow: 0 10px 24px rgba(47, 128, 237, 0.22);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    transform: translateY(140%);
+    opacity: 0;
+}
 
-    /** 图片列表*/
-    @media screen and (min-width:960px) {
-        .listNum img {
-            width: 258px;
-            height: 258px;
-        }
-    }
+.btn-back-to-top.scrolled {
+    transform: translateY(0);
+    opacity: 1;
+}
 
-    @media screen and (max-width:960px) {
-        .listNum img {
-            width: 358px;
-            height: 258px;
-        }
-    }
+.cards {
+    padding: 0;
+    margin: 0;
+}
 
-    .cards {
-        padding-top: 0px;
-        padding-bottom: 0px;
-        margin-right: 0px;
-        margin-left: 0px;
-    }
+.piclite-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    list-style: none;
+}
 
-    .card {
-        box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
-        border-radius: 5px 5px 5px 5px;
-    }
+.piclite-gallery-grid:before,
+.piclite-gallery-grid:after {
+    content: none;
+}
 
-    img {
-        cursor: pointer;
-        transition: all 0.8s;
-    }
+.piclite-gallery-item {
+    min-width: 0;
+}
 
-    img:hover {
-        transform: scale(1.5);
-        position: relative;
-        z-index: 100;
-    }
+.piclite-image-card {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 14px 32px rgba(26, 33, 45, 0.08);
+}
 
-    .bottom-bar {
-        opacity: 0;
-        width: 100%;
-        position: absolute;
-        bottom: 0.1px;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
+.piclite-image-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f3f5f8;
+}
 
-    .bottom-bar:hover {
+.piclite-image-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: zoom-in;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.piclite-image-card:hover .piclite-image-frame img {
+    transform: scale(1.025);
+}
+
+.piclite-card-actions {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 7px 8px;
+    color: #fff;
+    background: rgba(20, 25, 32, 0.78);
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    transform: translateY(6px);
+    backdrop-filter: blur(8px);
+}
+
+.piclite-image-card:hover .piclite-card-actions,
+.piclite-image-card:focus-within .piclite-card-actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.piclite-card-actions a,
+.piclite-card-actions label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+    margin: 0;
+    color: #fff;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.piclite-card-actions a:hover,
+.piclite-card-actions a:focus {
+    color: #cfe2ff;
+    text-decoration: none;
+}
+
+.piclite-card-actions label {
+    gap: 4px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.piclite-card-name {
+    max-width: 120px;
+    overflow: hidden;
+    justify-content: flex-start !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (hover: none) {
+    .piclite-card-actions {
         opacity: 1;
+        transform: none;
     }
+}
+
+@media (max-width: 767px) {
+    .piclite-gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+    }
+
+    .piclite-card-actions {
+        right: 6px;
+        bottom: 6px;
+        left: 6px;
+        gap: 6px;
+        padding: 6px;
+    }
+
+    .piclite-card-name {
+        display: none !important;
+    }
+}

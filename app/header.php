@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="renderer" content="webkit" />
 	<meta name="force-rendering" content="webkit" />
-		<meta name="author" content="PicLite">
+	<meta name="author" content="PicLite">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="referrer" content="same-origin">
 	<meta name="csrf-token" content="<?php echo htmlspecialchars(easyimage_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
@@ -18,6 +18,7 @@
 	<link rel="stylesheet" href="<?php static_cdn(); ?>/public/static/zui/css/zui.min.css">
 	<link rel="stylesheet" href="<?php static_cdn(); ?>/public/static/nprogress/nprogress.min.css">
 	<link rel="stylesheet" href="<?php static_cdn(); ?>/public/static/zui/theme/zui-theme-<?php echo $config['theme']; ?>.css">
+	<link rel="stylesheet" href="<?php static_cdn(); ?>/public/static/PicLite.css">
 	<script type="application/javascript" src="<?php static_cdn(); ?>/public/static/zui/lib/jquery/jquery-3.6.4.min.js"></script>
 	<script type="application/javascript" src="<?php static_cdn(); ?>/public/static/zui/js/zui.min.js"></script>
 	<script>

@@ -5,7 +5,7 @@ if ($config['ad_top']) echo $config['ad_top_info'];
 /** 检查登陆 */
 mustLogin();
 ?>
-<div class="col-md-12">
+<div class="piclite-page piclite-upload-page">
   <!-- 公告 -->
   <?php if (!empty($config['tips'])) : ?>
     <div class="marquee">
@@ -16,22 +16,33 @@ mustLogin();
       </div>
     </div>
   <?php endif; ?>
-  <div id='upShowID' class="uploader col-md-12 clo-xs-12" data-ride="uploader" data-url="/app/upload.php">
-    <div class="uploader-message text-center">
-      <div class="content"></div>
-      <button type="button" class="close">x</button>
-    </div>
-    <div class="uploader-files file-list file-list-lg file-rename-by-click" data-drag-placeholder="Command/Ctrl+V粘贴图片/拖拽至此处" style="min-height: 188px; border-style: dashed;"></div>
-    <div class="uploader-actions">
-      <button type="button" class="btn btn-link uploader-btn-browse"><i class="icon icon-plus"></i> 选择文件</button>
-      <button type="button" class="btn btn-link uploader-btn-start"><i class="icon icon-cloud-upload"></i> 开始上传</button>
-      <button type="button" class="btn btn-link uploader-btn-stop"><i class="icon icon-pause"></i> 暂停上传</button>
-      <div class="uploader-status pull-right text-muted hidden-xs"></div>
-      <div class="uploader-status pull-right text-muted col-xs-12 text-ellipsis visible-xs"></div>
+  <div class="piclite-section-head">
+    <div>
+      <h1>上传图片</h1>
+      <p>单文件 ≤ <?php echo getDistUsed($config['maxSize']); ?> · 单次最多 <?php echo (int)$config['maxUploadFiles']; ?> 张</p>
     </div>
   </div>
-  <div class="col-md-12 clo-xs-12">
-    <ul class="nav nav-tabs">
+  <div class="piclite-upload-panel">
+    <div id='upShowID' class="uploader piclite-uploader" data-ride="uploader" data-url="/app/upload.php">
+      <div class="uploader-message text-center">
+        <div class="content"></div>
+        <button type="button" class="close">x</button>
+      </div>
+      <div class="uploader-files file-list file-list-lg file-rename-by-click" data-drag-placeholder="粘贴图片 / 拖拽至此处"></div>
+      <div class="uploader-actions">
+        <button type="button" class="btn btn-primary uploader-btn-browse"><i class="icon icon-plus"></i> 选择文件</button>
+        <button type="button" class="btn btn-primary uploader-btn-start"><i class="icon icon-cloud-upload"></i> 开始上传</button>
+        <button type="button" class="btn btn-link uploader-btn-stop"><i class="icon icon-pause"></i> 暂停</button>
+        <div class="uploader-status pull-right text-muted hidden-xs"></div>
+        <div class="uploader-status pull-right text-muted col-xs-12 text-ellipsis visible-xs"></div>
+      </div>
+    </div>
+  </div>
+  <div class="piclite-result-panel">
+    <div class="piclite-result-head">
+      <h2>上传结果</h2>
+    </div>
+    <ul class="nav nav-tabs piclite-result-tabs">
       <li <?php if ($config['upload_first_show'] == 1) echo 'class="active"'; ?> data-toggle="tooltip" title="图片直链">
         <a href="#" data-target="#tab2Content1" data-toggle="tab"><i class="icon icon-picture"></i></a>
       </li>
@@ -52,36 +63,48 @@ mustLogin();
         <a href="#" data-target="#tab2Content6" data-toggle="tab"><i class="icon icon-trash"></i></a>
       </li>
     </ul>
-    <div class="tab-content" style="text-align:right;">
+    <div class="tab-content piclite-result-content">
       <div class="tab-pane fade <?php if ($config['upload_first_show'] == 1) echo 'active in';  ?>" id="tab2Content1">
         <textarea class="form-control" rows="5" id="links" readonly></textarea>
-        <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" style="margin-top:5px;" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
-        <button class="btn btn-primary btnLinks" onclick="uploadCopy('links','.btnLinks')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制" style="margin-top:5px;"><i class="icon icon-copy"></i></button>
+        <div class="piclite-output-actions">
+          <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
+          <button class="btn btn-primary btnLinks" onclick="uploadCopy('links','.btnLinks')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制"><i class="icon icon-copy"></i></button>
+        </div>
       </div>
       <div class="tab-pane fade <?php if ($config['upload_first_show'] == 2) echo 'active in'; ?>" id="tab2Content2">
         <textarea class="form-control" rows="5" id="bbscode" readonly></textarea>
-        <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" style="margin-top:5px;" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
-        <button class="btn btn-primary btnBbscode" onclick="uploadCopy('bbscode','.btnBbscode')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制" style="margin-top:5px;"><i class="icon icon-copy"></i></button>
+        <div class="piclite-output-actions">
+          <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
+          <button class="btn btn-primary btnBbscode" onclick="uploadCopy('bbscode','.btnBbscode')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制"><i class="icon icon-copy"></i></button>
+        </div>
       </div>
       <div class="tab-pane fade <?php if ($config['upload_first_show'] == 3) echo 'active in'; ?>" id="tab2Content3">
         <textarea class="form-control" rows="5" id="markdown" readonly></textarea>
-        <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" style="margin-top:5px;" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
-        <button class="btn btn-primary btnMarkDown" onclick="uploadCopy('markdown','.btnMarkDown')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制" style="margin-top:5px;"><i class="icon icon-copy"></i></button>
+        <div class="piclite-output-actions">
+          <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
+          <button class="btn btn-primary btnMarkDown" onclick="uploadCopy('markdown','.btnMarkDown')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制"><i class="icon icon-copy"></i></button>
+        </div>
       </div>
       <div class="tab-pane fade <?php if ($config['upload_first_show'] == 4) echo 'active in';  ?>" id="tab2Content4">
         <textarea class="form-control" rows="5" id="html" readonly></textarea>
-        <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" style="margin-top:5px;" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
-        <button class="btn btn-primary btnHtml" onclick="uploadCopy('html','.btnHtml')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制" style="margin-top:5px;"><i class="icon icon-copy"></i></button>
+        <div class="piclite-output-actions">
+          <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
+          <button class="btn btn-primary btnHtml" onclick="uploadCopy('html','.btnHtml')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制"><i class="icon icon-copy"></i></button>
+        </div>
       </div>
       <div class="tab-pane fade <?php if ($config['upload_first_show'] == 5) echo 'active in';  ?>" id="tab2Content5">
         <textarea class="form-control" rows="5" id="thumb" readonly></textarea>
-        <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" style="margin-top:5px;" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
-        <button class="btn btn-primary btnThumb" onclick="uploadCopy('thumb','.btnThumb')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制" style="margin-top:5px;"><i class="icon icon-copy"></i></button>
+        <div class="piclite-output-actions">
+          <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
+          <button class="btn btn-primary btnThumb" onclick="uploadCopy('thumb','.btnThumb')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制"><i class="icon icon-copy"></i></button>
+        </div>
       </div>
       <div class="tab-pane fade <?php if ($config['upload_first_show'] == 6) echo 'active in';  ?>" id="tab2Content6">
         <textarea class="form-control" rows="5" id="del" readonly></textarea>
-        <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" style="margin-top:5px;" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
-        <button class="btn btn-primary btnDel" onclick="uploadCopy('del','.btnDel')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制" style="margin-top:5px;"><i class="icon icon-copy"></i></button>
+        <div class="piclite-output-actions">
+          <button class="btn btn-primary" data-toggle="tooltip" data-original-title="刷新" onclick="location.reload()"><i class="icon icon-refresh"></i></button>
+          <button class="btn btn-primary btnDel" onclick="uploadCopy('del','.btnDel')" data-toggle="tooltip" data-original-title="复制" data-loading-text="已复制"><i class="icon icon-copy"></i></button>
+        </div>
       </div>
     </div>
   </div>

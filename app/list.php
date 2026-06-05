@@ -16,8 +16,14 @@ function easyimage_list_js($value)
   return json_encode((string)$value, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 }
 ?>
-<div class="row">
-  <div class="col-md-12">
+<div class="piclite-page piclite-gallery-page">
+  <div class="piclite-section-head">
+    <div>
+      <h1>图片广场</h1>
+      <p><?php echo date('Y/m/d'); ?> · 今日 <?php echo get_file_by_glob(APP_ROOT . config_path(), 'number'); ?> 张</p>
+    </div>
+  </div>
+  <div>
     <?php
     if (!$config['showSwitch'] && !is_who_login('admin')) : ?>
       <div class="alert alert-info">管理员关闭了预览哦~~</div>
@@ -67,10 +73,13 @@ function easyimage_list_js($value)
       }
 
       if (empty($fileArr[0])) : ?>
-        <div class="alert alert-danger">今天还没有上传的图片哟~~ <br />快来上传第一张吧~!</div>
+        <div class="piclite-empty-state">
+          <i class="icon icon-picture"></i>
+          <strong>今天还没有图片</strong>
+          <span>上传第一张图片后会显示在这里</span>
+        </div>
       <?php else : ?>
-        <ul id="viewjs">
-          <div class="cards listNum">
+        <div id="viewjs" class="piclite-gallery-grid cards listNum">
             <?php foreach ($fileArr as $key => $value) {
               if ($key < $keyNum) {
                 $relative_path = config_path($path) . $value;     // 相对路径
@@ -78,23 +87,25 @@ function easyimage_list_js($value)
                 $linkUrl = rand_imgurl() . $config_path . $value; // 图片复制与原图地址
                 $thumbUrl = creat_thumbnail_by_list($imgUrl);
             ?>
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                  <div class="card">
-                    <li><img src="<?php static_cdn(); ?>/public/images/loading.svg" data-image="<?php echo easyimage_list_html($thumbUrl); ?>" data-original="<?php echo easyimage_list_html($imgUrl); ?>" alt="PicLite" onerror="this.onerror=null;this.src=this.getAttribute('data-original') || '/public/images/404.png';"></li>
-                    <div class="bottom-bar">
-                      <a href="<?php echo easyimage_list_html($linkUrl); ?>" target="_blank"><i class="icon icon-picture" data-toggle="tooltip" title="打开" style="margin-left:10px;"></i></a>
-                      <a href="#" class="copy" data-clipboard-text="<?php echo easyimage_list_html($linkUrl); ?>" data-toggle="tooltip" title="复制链接" style="margin-left:10px;"><i class="icon icon-copy"></i></a>
+                <div class="piclite-gallery-item">
+                  <div class="card piclite-image-card">
+                    <div class="piclite-image-frame">
+                      <img src="<?php static_cdn(); ?>/public/images/loading.svg" data-image="<?php echo easyimage_list_html($thumbUrl); ?>" data-original="<?php echo easyimage_list_html($imgUrl); ?>" alt="PicLite" onerror="this.onerror=null;this.src=this.getAttribute('data-original') || '/public/images/404.png';">
+                    </div>
+                    <div class="bottom-bar piclite-card-actions">
+                      <a href="<?php echo easyimage_list_html($linkUrl); ?>" target="_blank" rel="noopener"><i class="icon icon-picture" data-toggle="tooltip" title="打开"></i></a>
+                      <a href="#" class="copy" data-clipboard-text="<?php echo easyimage_list_html($linkUrl); ?>" data-toggle="tooltip" title="复制链接"><i class="icon icon-copy"></i></a>
                       <?php if ($config['show_exif_info'] || is_who_login('admin')) : ?>
-                        <a href="/app/info.php?img=<?php echo rawurlencode($relative_path); ?>" data-toggle="tooltip" title="详细信息" target="_blank" style="margin-left:10px;"><i class="icon icon-info-sign"></i></a>
+                        <a href="/app/info.php?img=<?php echo rawurlencode($relative_path); ?>" data-toggle="tooltip" title="详细信息" target="_blank" rel="noopener"><i class="icon icon-info-sign"></i></a>
                       <?php endif; ?>
-                      <a href="/app/down.php?dw=<?php echo rawurlencode($relative_path); ?>" data-toggle="tooltip" title="下载文件" target="_blank" style="margin-left:10px;"><i class="icon icon-cloud-download"></i></a>
+                      <a href="/app/down.php?dw=<?php echo rawurlencode($relative_path); ?>" data-toggle="tooltip" title="下载文件" target="_blank" rel="noopener"><i class="icon icon-cloud-download"></i></a>
                       <?php if (!empty($config['report'])) : ?>
-                        <a href="<?php echo easyimage_list_html($config['report'] . '?Website1=' . rawurlencode($linkUrl)); ?>" target="_blank"><i class="icon icon-question-sign" data-toggle="tooltip" title="举报文件" style="margin-left:10px;"></i></a>
+                        <a href="<?php echo easyimage_list_html($config['report'] . '?Website1=' . rawurlencode($linkUrl)); ?>" target="_blank" rel="noopener"><i class="icon icon-question-sign" data-toggle="tooltip" title="举报文件"></i></a>
                       <?php endif; ?>
                       <?php if (is_who_login('admin')) : ?>
-                        <a href="#" onclick="ajax_post(<?php echo easyimage_list_html(easyimage_list_js($relative_path)); ?>,'recycle')" data-toggle="tooltip" title="回收文件" style="margin-left:10px;"><i class="icon icon-undo"></i></a>
-                        <a href="#" onclick="ajax_post(<?php echo easyimage_list_html(easyimage_list_js($relative_path)); ?>)" data-toggle="tooltip" title="删除文件" style="margin-left:10px;"><i class="icon icon-trash"></i></a>
-                        <label class="text-primary"><input type="checkbox" id="url" name="checkbox" value="<?php echo easyimage_list_html($relative_path); ?>"> 选择</label>
+                        <a href="#" onclick="ajax_post(<?php echo easyimage_list_html(easyimage_list_js($relative_path)); ?>,'recycle')" data-toggle="tooltip" title="回收文件"><i class="icon icon-undo"></i></a>
+                        <a href="#" onclick="ajax_post(<?php echo easyimage_list_html(easyimage_list_js($relative_path)); ?>)" data-toggle="tooltip" title="删除文件"><i class="icon icon-trash"></i></a>
+                        <label><input type="checkbox" name="checkbox" value="<?php echo easyimage_list_html($relative_path); ?>"> 选择</label>
                       <?php endif; ?>
                     </div>
                   </div>
@@ -103,18 +114,16 @@ function easyimage_list_js($value)
               }
             }
             ?>
-          </div>
-        </ul>
+        </div>
     <?php
       endif;
     endif;
     /** 底部广告 */
     if ($config['ad_bot']) echo $config['ad_bot_info']; ?>
   </div>
-  <div class="col-md-12" style="margin-bottom: 5em;">
-    <hr />
-    <div class="col-md-8 col-xs-12" style="padding-bottom:5px">
-      <div class="btn-toolbar">
+  <div class="piclite-gallery-toolbar">
+    <div>
+      <div class="btn-toolbar piclite-toolbar">
         <div class="btn-group">
           <a class="btn btn-danger btn-mini" href="?<?php echo http_build_query($httpUrl); ?>">当前<?php echo $allUploud; ?></a>
           <a class="btn btn-primary btn-mini" href="list.php">今日<?php echo get_file_by_glob(APP_ROOT . config_path() . '*.*', 'number'); ?></a>
@@ -153,7 +162,7 @@ function easyimage_list_js($value)
           </div>
         </form>
       </div> -->
-    <div class="col-md-2 col-xs-7">
+    <div class="piclite-filter-group">
       <div class="btn-group">
         <a class="btn btn-mini" href="<?php echo '?' . http_build_query($httpUrl) . '&search=jpg'; ?>">JPG</a>
         <a class="btn btn-mini" href="<?php echo '?' . http_build_query($httpUrl) . '&search=png'; ?>">PNG</a>
@@ -162,7 +171,7 @@ function easyimage_list_js($value)
       </div>
     </div>
     <!-- 按日期-->
-    <div class="col-md-2 col-xs-5">
+    <div class="piclite-date-filter">
       <form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="get">
         <div class="input-group">
           <span class="input-group-addon fix-border fix-padding"></span>
@@ -187,9 +196,12 @@ function easyimage_list_js($value)
   <script type="application/javascript" src="<?php static_cdn(); ?>/public/static/zui/lib/datetimepicker/datetimepicker.min.js"></script>
   <script>
     // viewjs
-    new Viewer(document.getElementById('viewjs'), {
-      url: 'data-original',
-    });
+    var gallery = document.getElementById('viewjs');
+    if (gallery) {
+      new Viewer(gallery, {
+        url: 'data-original',
+      });
+    }
 
     // POST 删除提交
     function ajax_post(url, mode = 'delete') {
