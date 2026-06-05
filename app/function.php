@@ -469,6 +469,180 @@ function easyimage_upload_rate_message($remaining)
     return '上传过于频繁, 请 ' . max(1, (int)$remaining) . ' 秒后再试';
 }
 
+function easyimage_config_update_allowed_keys()
+{
+    return array_fill_keys(array(
+        'NProgress_Progress',
+        'NProgress_default',
+        'TinyPng_key',
+        'ad_bot',
+        'ad_bot_info',
+        'ad_top',
+        'ad_top_info',
+        'admin_path_status',
+        'allowed',
+        'apiStatus',
+        'auto_delete',
+        'cache_freq',
+        'captcha',
+        'chart_on',
+        'checkEnv',
+        'checkImg',
+        'checkImg_value',
+        'check_ip',
+        'check_ip_list',
+        'check_ip_model',
+        'chunks',
+        'compress',
+        'compress_ratio',
+        'customize',
+        'dark-mode',
+        'description',
+        'domain',
+        'extensions',
+        'footer',
+        'ftp_complete_del_local',
+        'ftp_delloc_sync',
+        'ftp_host',
+        'ftp_pasv',
+        'ftp_pass',
+        'ftp_port',
+        'ftp_ssl',
+        'ftp_status',
+        'ftp_time',
+        'ftp_user',
+        'guest_path_status',
+        'hide',
+        'hide_key',
+        'hide_path',
+        'history',
+        'image_recycl',
+        'image_x',
+        'image_y',
+        'imgConvert',
+        'imgName',
+        'imgRatio',
+        'imgRatio_crop',
+        'imgRatio_preserve_headers',
+        'imgRatio_quality',
+        'imgurl',
+        'info_rand_pic',
+        'ip_upload_counts',
+        'keywords',
+        'language',
+        'listDate',
+        'listNumber',
+        'login_bg',
+        'login_rate_limit',
+        'login_rate_limit_attempts',
+        'login_rate_limit_lock',
+        'login_rate_limit_window',
+        'maxHeight',
+        'maxSize',
+        'maxUploadFiles',
+        'maxWidth',
+        'md5_black',
+        'md5_blacklist',
+        'mime',
+        'minHeight',
+        'minWidth',
+        'moderatecontent_key',
+        'mustLogin',
+        'notice',
+        'notice_status',
+        'nsfwjs_url',
+        'path',
+        'public',
+        'public_list',
+        'report',
+        'set_notice',
+        'showSwitch',
+        'showSort',
+        'show_admin_inc',
+        'show_exif_info',
+        'show_user_hash_del',
+        'static_cdn',
+        'static_cdn_url',
+        'storage_path',
+        'terms',
+        'textColor',
+        'textFont',
+        'textSize',
+        'theme',
+        'thumbnail',
+        'thumbnail_h',
+        'thumbnail_w',
+        'timezone',
+        'tips',
+        'title',
+        'token_path_status',
+        'token_suffix_ID',
+        'trusted_proxies',
+        'update',
+        'upload_first_show',
+        'upload_logs',
+        'upload_rate_limit',
+        'upload_rate_limit_requests',
+        'upload_rate_limit_window',
+        'waterImg',
+        'waterPosition',
+        'waterText',
+        'watermark'
+    ), true);
+}
+
+function easyimage_public_list_allowed_values()
+{
+    return array_fill_keys(array(
+        'time',
+        'today',
+        'yesterday',
+        'total_space',
+        'used_space',
+        'free_space',
+        'image_used',
+        'file',
+        'dir',
+        'month'
+    ), true);
+}
+
+function easyimage_filter_config_update_post($postArr)
+{
+    $allowedKeys = easyimage_config_update_allowed_keys();
+    $allowedPublicList = easyimage_public_list_allowed_values();
+    $filtered = array();
+
+    foreach ($postArr as $key => $value) {
+        if (!isset($allowedKeys[$key])) {
+            continue;
+        }
+
+        if ($key === 'public_list') {
+            if (!is_array($value)) {
+                continue;
+            }
+
+            $publicList = array();
+            foreach ($value as $item) {
+                if (is_scalar($item) && isset($allowedPublicList[$item])) {
+                    $publicList[] = (string)$item;
+                }
+            }
+            $filtered[$key] = array_values(array_unique($publicList));
+            continue;
+        }
+
+        if (is_array($value)) {
+            continue;
+        }
+
+        $filtered[$key] = $value;
+    }
+
+    return $filtered;
+}
+
 
 /**
  * 2023-01-06 校验登录

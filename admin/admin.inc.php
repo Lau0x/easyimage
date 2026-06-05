@@ -43,20 +43,7 @@ $guest_config_file = APP_ROOT . '/config/config.guest.php'; // config.guest.php
 
 // 修改config配置
 if (isset($_POST['update'])) {
-    $postArr = $_POST;
-
-    if (isset($postArr['user'])) {
-        if ($postArr['user'] == $guestConfig[$postArr['user']])
-            echo '
-            <script>
-            new $.zui.Messager("管理员账号不能与上传者账号相同!", {
-                type: "danger", // 定义颜色主题 
-                icon: "exclamation-sign" // 定义消息图标
-            }).show();
-            </script>
-            ';
-        exit(header("refresh:1;"));
-    }
+    $postArr = easyimage_filter_config_update_post($_POST);
 
     $new_config = array_replace($config, $postArr);
     cache_write($config_file, $new_config);

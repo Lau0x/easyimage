@@ -47,6 +47,10 @@ add_test_files() {
   docker exec "$1" sh -c 'printf image > /var/www/html/i/test.png && printf "<?php echo 123; ?>" > /var/www/html/i/pwn.php'
 }
 
+assert_config_filter() {
+  docker exec "$1" php -r 'require "/var/www/html/app/function.php"; $post = array("title" => "ok", "csrf_token" => "secret", "admin_form" => "", "password" => "plain", "unknown_key" => "bad", "domain" => array("bad"), "update" => "2026-06-05 10:30:00", "public_list" => array("time", "evil", "file", "time")); $filtered = easyimage_filter_config_update_post($post); if (!isset($filtered["title"]) || $filtered["title"] !== "ok") exit(1); foreach (array("csrf_token", "admin_form", "password", "unknown_key", "domain") as $key) { if (isset($filtered[$key])) exit(2); } if ($filtered["public_list"] !== array("time", "file")) exit(3); if ($filtered["update"] !== "2026-06-05 10:30:00") exit(4);'
+}
+
 docker build -t "$IMAGE" .
 
 plain_container="$(docker run -d -p 127.0.0.1::80 "$IMAGE")"
@@ -56,6 +60,7 @@ wait_http "http://127.0.0.1:$plain_port/install/index.php"
 docker exec "$plain_container" test -s /var/www/html/config/install.token
 docker exec "$plain_container" test -d /var/www/html/admin/logs/login-rate
 docker exec "$plain_container" test -d /var/www/html/admin/logs/upload-rate
+assert_config_filter "$plain_container"
 add_test_files "$plain_container"
 assert_status 403 "http://127.0.0.1:$plain_port/config/config.php"
 assert_status 403 "http://127.0.0.1:$plain_port/i/pwn.php"
