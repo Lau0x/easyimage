@@ -1,36 +1,20 @@
-name: PHP Composer
+name: PHP Lint
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - main
   pull_request:
-    branches: [ master ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  lint:
+    runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v6
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate --strict
-
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
-
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
+      - name: Lint PHP files
+        run: docker run --rm -v "$PWD":/work -w /work php:8.3-cli sh -c 'find app admin api install -name "*.php" -print0 | xargs -0 -n1 php -l'
