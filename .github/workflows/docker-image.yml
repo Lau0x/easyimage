@@ -17,7 +17,17 @@ permissions:
   packages: write
 
 jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run Docker smoke tests
+        run: scripts/docker-smoke-test.sh
+
   build:
+    needs: smoke
     strategy:
       fail-fast: false
       matrix:
