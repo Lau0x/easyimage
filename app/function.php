@@ -217,6 +217,152 @@ function easyimage_verify_install_token($token)
     return easyimage_hash_equals($knownToken, trim((string)$token));
 }
 
+function easyimage_login_rate_limit_enabled()
+{
+    global $config;
+
+    return !isset($config['login_rate_limit']) || (int)$config['login_rate_limit'] === 1;
+}
+
+function easyimage_login_rate_config($key, $default)
+{
+    global $config;
+
+    $value = isset($config[$key]) ? (int)$config[$key] : $default;
+    return $value > 0 ? $value : $default;
+}
+
+function easyimage_login_rate_default()
+{
+    return array(
+        'count' => 0,
+        'first' => 0,
+        'locked_until' => 0,
+        'last_user' => ''
+    );
+}
+
+function easyimage_login_rate_file()
+{
+    $ip = real_ip();
+    if ($ip === '') {
+        $ip = 'unknown';
+    }
+
+    return APP_ROOT . '/admin/logs/login-rate/' . hash('sha256', $ip) . '.php';
+}
+
+function easyimage_login_rate_read()
+{
+    $file = easyimage_login_rate_file();
+    if (!is_file($file)) {
+        return easyimage_login_rate_default();
+    }
+
+    $raw = file_get_contents($file);
+    $prefix = '<?php exit; ?>';
+    if (strpos($raw, $prefix) === 0) {
+        $raw = substr($raw, strlen($prefix));
+    }
+
+    $state = json_decode(trim($raw), true);
+    if (!is_array($state)) {
+        return easyimage_login_rate_default();
+    }
+
+    return array(
+        'count' => isset($state['count']) ? max(0, (int)$state['count']) : 0,
+        'first' => isset($state['first']) ? max(0, (int)$state['first']) : 0,
+        'locked_until' => isset($state['locked_until']) ? max(0, (int)$state['locked_until']) : 0,
+        'last_user' => isset($state['last_user']) ? (string)$state['last_user'] : ''
+    );
+}
+
+function easyimage_login_rate_write($state)
+{
+    $file = easyimage_login_rate_file();
+    $dir = dirname($file);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+
+    file_put_contents($file, '<?php exit; ?>' . PHP_EOL . json_encode($state), LOCK_EX);
+}
+
+function easyimage_login_rate_status_from_state($state)
+{
+    $remaining = max(0, $state['locked_until'] - time());
+
+    return array(
+        'locked' => $remaining > 0,
+        'remaining' => $remaining,
+        'state' => $state
+    );
+}
+
+function easyimage_login_rate_status($user = '')
+{
+    if (!easyimage_login_rate_limit_enabled()) {
+        return easyimage_login_rate_status_from_state(easyimage_login_rate_default());
+    }
+
+    $state = easyimage_login_rate_read();
+    return easyimage_login_rate_status_from_state($state);
+}
+
+function easyimage_login_rate_record_failure($user = '')
+{
+    if (!easyimage_login_rate_limit_enabled()) {
+        return easyimage_login_rate_status_from_state(easyimage_login_rate_default());
+    }
+
+    $state = easyimage_login_rate_read();
+    $status = easyimage_login_rate_status_from_state($state);
+    if ($status['locked']) {
+        return $status;
+    }
+
+    $now = time();
+    if ($state['locked_until'] > 0 && $state['locked_until'] <= $now) {
+        $state = easyimage_login_rate_default();
+        $state['first'] = $now;
+    }
+
+    $window = easyimage_login_rate_config('login_rate_limit_window', 300);
+    if ($state['first'] <= 0 || $state['first'] + $window <= $now) {
+        $state = easyimage_login_rate_default();
+        $state['first'] = $now;
+    }
+
+    $state['count']++;
+    $state['last_user'] = substr(strip_tags((string)$user), 0, 80);
+
+    if ($state['count'] >= easyimage_login_rate_config('login_rate_limit_attempts', 5)) {
+        $state['locked_until'] = $now + easyimage_login_rate_config('login_rate_limit_lock', 900);
+    }
+
+    easyimage_login_rate_write($state);
+    return easyimage_login_rate_status_from_state($state);
+}
+
+function easyimage_login_rate_reset($user = '')
+{
+    if (!easyimage_login_rate_limit_enabled()) {
+        return;
+    }
+
+    $file = easyimage_login_rate_file();
+    if (is_file($file)) {
+        unlink($file);
+    }
+}
+
+function easyimage_login_rate_message($remaining)
+{
+    $minutes = max(1, (int)ceil($remaining / 60));
+    return '登录失败过多, 请 ' . $minutes . ' 分钟后再试';
+}
+
 
 /**
  * 2023-01-06 校验登录

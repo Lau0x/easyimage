@@ -657,6 +657,25 @@ auto_delete(); //定时删除
                             </div>
                         </div>
                         <div class="col-md-2">
+                            <div class="switch switch-inline" data-toggle="tooltip" title="登录失败过多时临时锁定当前来源IP">
+                                <input type="hidden" name="login_rate_limit" value="0">
+                                <input type="checkbox" name="login_rate_limit" value="1" <?php if (!isset($config['login_rate_limit']) || $config['login_rate_limit']) echo 'checked="checked"'; ?>>
+                                <label style="font-weight: bold">登录限速</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2" data-toggle="tooltip" title="默认5次">
+                            <input type="number" class="form-control" name="login_rate_limit_attempts" min="1" value="<?php echo isset($config['login_rate_limit_attempts']) ? (int)$config['login_rate_limit_attempts'] : 5; ?>">
+                            <label style="font-weight: bold">失败次数</label>
+                        </div>
+                        <div class="col-md-2" data-toggle="tooltip" title="默认300秒">
+                            <input type="number" class="form-control" name="login_rate_limit_window" min="1" value="<?php echo isset($config['login_rate_limit_window']) ? (int)$config['login_rate_limit_window'] : 300; ?>">
+                            <label style="font-weight: bold">统计窗口(秒)</label>
+                        </div>
+                        <div class="col-md-2" data-toggle="tooltip" title="默认900秒">
+                            <input type="number" class="form-control" name="login_rate_limit_lock" min="1" value="<?php echo isset($config['login_rate_limit_lock']) ? (int)$config['login_rate_limit_lock'] : 900; ?>">
+                            <label style="font-weight: bold">锁定时间(秒)</label>
+                        </div>
+                        <div class="col-md-2">
                             <div class="switch switch-inline" data-toggle="tooltip" title="开启API上传接口">
                                 <input type="hidden" name="apiStatus" value="0">
                                 <input type="checkbox" name="apiStatus" value="1" <?php if ($config['apiStatus']) echo 'checked="checked"'; ?>>

@@ -25,9 +25,17 @@ if (isset($_GET['login'])) {
 
 // 提交登录
 if (isset($_POST['password']) and isset($_POST['user'])) {
+    $loginUser = trim((string)$_POST['user']);
+    $rateStatus = easyimage_login_rate_status($loginUser);
+
+    if ($rateStatus['locked']) {
+        $easyimageLoginNotice = array('message' => easyimage_login_rate_message($rateStatus['remaining']), 'type' => 'danger', 'icon' => 'times');
+        $easyimageRedirectUrl = './index.php';
+        write_login_log($loginUser, '', $easyimageLoginNotice['message']);
+    }
 
     // 验证码
-    if ($config['captcha']) {
+    if ($easyimageLoginNotice === null && $config['captcha']) {
         if (empty($_REQUEST['code'])) {
             $easyimageLoginNotice = array('message' => '请填写验证码!', 'type' => 'danger', 'icon' => 'exclamation-sign');
             $easyimageRedirectUrl = './index.php';
@@ -38,22 +46,35 @@ if (isset($_POST['password']) and isset($_POST['user'])) {
                 $easyimageRedirectUrl = './index.php';
             }
         }
+
+        if ($easyimageLoginNotice !== null) {
+            $rateStatus = easyimage_login_rate_record_failure($loginUser);
+            if ($rateStatus['locked']) {
+                $easyimageLoginNotice['message'] = easyimage_login_rate_message($rateStatus['remaining']);
+            }
+            write_login_log($loginUser, '', $easyimageLoginNotice['message']);
+        }
     }
 
     if ($easyimageLoginNotice === null) {
-        $login = _login($_POST['user'], $_POST['password']);
+        $login = _login($loginUser, $_POST['password']);
         $login = json_decode($login, true);
 
         if ($login['code'] == 200) {
+            easyimage_login_rate_reset($loginUser);
             $easyimageLoginNotice = array('message' => $login["messege"], 'type' => 'primary', 'icon' => 'check');
             $easyimageRedirectUrl = $config['domain'];
         } else {
+            $rateStatus = easyimage_login_rate_record_failure($loginUser);
             $easyimageLoginNotice = array('message' => $login["messege"], 'type' => 'danger', 'icon' => 'times');
+            if ($rateStatus['locked']) {
+                $easyimageLoginNotice['message'] = easyimage_login_rate_message($rateStatus['remaining']);
+            }
             $easyimageRedirectUrl = './index.php';
         }
 
         // 登录日志
-        write_login_log($_POST['user'], '', $login["messege"]);
+        write_login_log($loginUser, '', $easyimageLoginNotice['message']);
     }
 }
 

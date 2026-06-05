@@ -6,6 +6,7 @@ mkdir -p \
   /var/www/html/i/cache \
   /var/www/html/admin/logs/counts \
   /var/www/html/admin/logs/login \
+  /var/www/html/admin/logs/login-rate \
   /var/www/html/admin/logs/tasks \
   /var/www/html/admin/logs/upload \
   /var/www/html/admin/logs/version
