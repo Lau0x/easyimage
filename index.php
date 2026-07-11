@@ -150,6 +150,11 @@ mustLogin();
     // sign
     multipart_params: {
       'sign': new Date().getTime() / 1000 | 0,
+      'upload_id': (window.crypto && window.crypto.getRandomValues) ?
+        Array.from(window.crypto.getRandomValues(new Uint8Array(16)), function(byte) {
+          return byte.toString(16).padStart(2, '0');
+        }).join('') :
+        String(Date.now()) + Math.random().toString(36).slice(2),
     },
     // 预览图尺寸
     previewImageSize: {

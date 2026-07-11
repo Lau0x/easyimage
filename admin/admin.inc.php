@@ -394,6 +394,10 @@ auto_delete(); //定时删除
                         <input type="range" class="form-control" name="maxSize" value="<?php echo $config['maxSize']; ?>" min="1048576" max="104857600" step="1048576" onchange="document.getElementById('maxSize').innerHTML=value/1024/1024">
                     </div>
                     <div class="form-group col-md-6">
+                        <label>最大图片像素 | 当前: </label><label id="maxPixels"><?php echo isset($config['maxPixels']) ? (int)$config['maxPixels'] : 40000000; ?></label>
+                        <input type="range" class="form-control" name="maxPixels" value="<?php echo isset($config['maxPixels']) ? (int)$config['maxPixels'] : 40000000; ?>" min="1000000" max="100000000" step="1000000" onchange="document.getElementById('maxPixels').innerHTML=value">
+                    </div>
+                    <div class="form-group col-md-6">
                         <label>最小上传宽度 | 当前: </label><label id="minWidth"><?php echo $config['minWidth']; ?></label><label>px</label>
                         <input type="range" class="form-control" name="minWidth" value="<?php echo $config['minWidth']; ?>" min="5" max="1024" step="10" onchange="document.getElementById('minWidth').innerHTML=value">
                     </div>

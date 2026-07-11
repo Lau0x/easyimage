@@ -22,6 +22,22 @@ function easyimage_thumb_passthrough($file, $mime)
     exit;
 }
 
+function easyimage_thumb_output($file, $mime, $cacheAge)
+{
+    $etag = '"' . hash('sha256', filemtime($file) . '|' . filesize($file)) . '"';
+    header('Content-Type: ' . $mime);
+    header('Cache-Control: public, max-age=' . $cacheAge . ', immutable');
+    header('ETag: ' . $etag);
+
+    if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
+        http_response_code(304);
+        exit;
+    }
+
+    readfile($file);
+    exit;
+}
+
 if (empty($_GET['img'])) {
     easyimage_thumb_not_found();
 }
@@ -56,6 +72,55 @@ if (!function_exists($createFunction)) {
 
 $width = max(1, (int)$config['thumbnail_w']);
 $height = max(1, (int)$config['thumbnail_h']);
+$cacheHours = isset($config['cache_freq']) ? (int)$config['cache_freq'] : 2;
+$cacheAge = max(1, $cacheHours) * 60 * 60;
+$cacheDir = APP_ROOT . $config['path'] . 'cache/thumbs/';
+$cacheKey = hash('sha256', $source . '|' . filemtime($source) . '|' . $width . '|' . $height);
+$cacheFile = $cacheDir . $cacheKey . '.' . $gdType;
+$mimeTypes = array(
+    'jpeg' => 'image/jpeg',
+    'png' => 'image/png',
+    'gif' => 'image/gif',
+    'bmp' => 'image/bmp',
+    'webp' => 'image/webp',
+);
+$mime = isset($mimeTypes[$gdType]) ? $mimeTypes[$gdType] : 'application/octet-stream';
 
-header('Cache-Control: public, max-age=' . ((int)$config['cache_freq'] * 60 * 60));
-Thumb::show($source, $width, $height);
+if (is_file($cacheFile) && filesize($cacheFile) > 0) {
+    easyimage_thumb_output($cacheFile, $mime, $cacheAge);
+}
+
+if (!is_dir($cacheDir) && !mkdir($cacheDir, 0755, true) && !is_dir($cacheDir)) {
+    easyimage_thumb_passthrough($source, $mime);
+}
+
+$lockFile = $cacheFile . '.lock';
+$lock = fopen($lockFile, 'c');
+if ($lock === false || !flock($lock, LOCK_EX)) {
+    if (is_resource($lock)) fclose($lock);
+    easyimage_thumb_passthrough($source, $mime);
+}
+
+if (!is_file($cacheFile) || filesize($cacheFile) === 0) {
+    $tempFile = $cacheFile . '.tmp-' . bin2hex(easyimage_random_bytes(6));
+    try {
+        Thumb::out($source, $tempFile, $width, $height);
+        if (is_file($tempFile) && filesize($tempFile) > 0) {
+            @rename($tempFile, $cacheFile);
+        } else {
+            @unlink($tempFile);
+        }
+    } catch (Throwable $e) {
+        @unlink($tempFile);
+    }
+}
+
+flock($lock, LOCK_UN);
+fclose($lock);
+@unlink($lockFile);
+
+if (is_file($cacheFile) && filesize($cacheFile) > 0) {
+    easyimage_thumb_output($cacheFile, $mime, $cacheAge);
+}
+
+easyimage_thumb_passthrough($source, $mime);

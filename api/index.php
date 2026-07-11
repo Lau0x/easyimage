@@ -68,24 +68,19 @@ if (!$config['chunks']) {
 }
 
 if ($handle->uploaded) {
+    $imageValidation = easyimage_validate_upload_image($handle->file_src_pathname);
+    if (!$imageValidation['valid']) {
+        @unlink($handle->file_src_pathname);
+        exit(json_encode(array(
+            "result" => "failed",
+            "code" => 413,
+            "message" => $imageValidation['message'],
+        ), JSON_UNESCAPED_UNICODE));
+    }
+
     // 允许上传的mime类型
     if ($config['allowed']) {
         $handle->allowed = array('image/*');
-    }
-
-    // 检查svg是否存在script和a标签代码
-    if ($handle->file_src_name_ext === 'svg') {
-        $svg = file_get_contents($handle->file_src_pathname);
-        if (preg_match('/<script[\s\S]*?<\/script>/', $svg) || stripos($svg, 'href=')) {
-            exit(json_encode(
-                array(
-                    "result"  => "failed",
-                    "code"    => 205,
-                    "message" => "请勿上传非法文件",
-                ),
-                JSON_UNESCAPED_UNICODE
-            ));
-        }
     }
 
     // 文件命名

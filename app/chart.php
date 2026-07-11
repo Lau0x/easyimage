@@ -41,6 +41,7 @@ function write_chart_total()
     $count_day = getLatelyTime('month');
 
     $count_contents['filename'] = $chart_total_file_md5; // 文件名称
+    $count_contents['cached_at'] = time();
     $count_contents['total_time'] = date('Y-m-d H:i:s'); // 统计时间
     $count_contents['date'] = date('YmdH');              // 校对时间
 
@@ -59,7 +60,7 @@ function write_chart_total()
     }
 
     $count_contents = json_encode($count_contents, true);
-    file_put_contents($chart_total_file, $count_contents);  // 存储文件
+    writefile($chart_total_file, $count_contents);
 
 }
 
@@ -70,19 +71,21 @@ function read_chart_total()
 
     $cache_freq = $config['cache_freq'];
 
+    $read_chart_file = null;
     if (file_exists($chart_total_file)) {
-        $read_chart_file = file_get_contents($chart_total_file);
-        $read_chart_file = json_decode($read_chart_file, true);
-    } else {
-        write_chart_total();
-        $read_chart_file = file_get_contents($chart_total_file);
-        $read_chart_file = json_decode($read_chart_file, true);
+        $read_chart_file = json_decode((string)file_get_contents($chart_total_file), true);
     }
 
-    if ((date('YmdH') - $read_chart_file['date']) > $cache_freq) {
+    if (!is_array($read_chart_file)) {
         write_chart_total();
-        $read_chart_file = file_get_contents($chart_total_file);
-        $read_chart_file = json_decode($read_chart_file, true);
+        $read_chart_file = json_decode((string)file_get_contents($chart_total_file), true);
+    }
+
+    $legacyTime = isset($read_chart_file['total_time']) ? strtotime($read_chart_file['total_time']) : false;
+    $cachedAt = isset($read_chart_file['cached_at']) ? (int)$read_chart_file['cached_at'] : (int)$legacyTime;
+    if ($cachedAt <= 0 || time() - $cachedAt > max(1, (int)$cache_freq) * 3600) {
+        write_chart_total();
+        $read_chart_file = json_decode((string)file_get_contents($chart_total_file), true);
     }
 
     for ($i = 0; $i < count($read_chart_file['chart_data']); $i++) {

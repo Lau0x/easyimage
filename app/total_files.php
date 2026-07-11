@@ -48,6 +48,8 @@ function creat_json() // 创建json文件
     global $total_file_path;
     global $totalJsonMD5;
 
+    $dirn = 0;
+    $filen = 0;
     total_files($total_file_path);
     $usage_space = getDistUsed(getDirectorySize(APP_ROOT . $config['path']));
     $todayUpload = getFileNumber(APP_ROOT . config_path()); // 今日上传数量
@@ -55,6 +57,7 @@ function creat_json() // 创建json文件
 
     $totalJsonInfo = [
         'filename'    => $totalJsonMD5,                      // 统计文件名称
+        'cached_at'   => time(),
         'date'        => date('YmdH'),                       // 识别日期格式
         'total_time'  => date('Y-m-d H:i:s'),                // 统计时间
         'dirnum'      => $dirn,                              // 文件夹数量
@@ -64,12 +67,10 @@ function creat_json() // 创建json文件
         'yestUpload'  => $yestUpload                         // 昨日上传数量
     ];
     $totalJsonInfo = json_encode($totalJsonInfo, true);
-    if (is_dir(APP_ROOT . '/admin/logs/counts/')) {
-        file_put_contents($totalJsonName, $totalJsonInfo);
-    } else {
-        mkdir(APP_ROOT . '/admin/logs/counts/', 0777, true);  // 创建cache目录
-        file_put_contents($totalJsonName, $totalJsonInfo);
+    if (!is_dir(APP_ROOT . '/admin/logs/counts/')) {
+        mkdir(APP_ROOT . '/admin/logs/counts/', 0755, true);
     }
+    writefile($totalJsonName, $totalJsonInfo);
 }
 function read_total_json($total) // 读取json文件
 {
@@ -78,20 +79,22 @@ function read_total_json($total) // 读取json文件
     global $config;
     $cache_freq = $config['cache_freq'];
 
+    $totalJsonFile = null;
     if (file_exists($totalJsonName)) {
-        $totalJsonFile = file_get_contents($totalJsonName);
-        $totalJsonFile = json_decode($totalJsonFile, true);
-    } else {
-        creat_json();
-        $totalJsonFile = file_get_contents($totalJsonName);
-        $totalJsonFile = json_decode($totalJsonFile, true);
+        $totalJsonFile = json_decode((string)file_get_contents($totalJsonName), true);
     }
 
-    if ((date('YmdH') - $totalJsonFile['date']) > $cache_freq) {
+    if (!is_array($totalJsonFile)) {
         creat_json();
-        $totalJsonFile = file_get_contents($totalJsonName);
-        $totalJsonFile = json_decode($totalJsonFile, true);
+        $totalJsonFile = json_decode((string)file_get_contents($totalJsonName), true);
     }
 
-    return $totalJsonFile[$total];
+    $legacyTime = isset($totalJsonFile['total_time']) ? strtotime($totalJsonFile['total_time']) : false;
+    $cachedAt = isset($totalJsonFile['cached_at']) ? (int)$totalJsonFile['cached_at'] : (int)$legacyTime;
+    if ($cachedAt <= 0 || time() - $cachedAt > max(1, (int)$cache_freq) * 3600) {
+        creat_json();
+        $totalJsonFile = json_decode((string)file_get_contents($totalJsonName), true);
+    }
+
+    return isset($totalJsonFile[$total]) ? $totalJsonFile[$total] : null;
 }
