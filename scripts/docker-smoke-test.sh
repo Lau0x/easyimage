@@ -6,7 +6,7 @@ CONTAINERS=""
 
 cleanup() {
   for container in $CONTAINERS; do
-    docker stop "$container" >/dev/null 2>&1 || true
+    docker rm -f "$container" >/dev/null 2>&1 || true
   done
 }
 
@@ -83,5 +83,23 @@ wait_http "http://127.0.0.1:$strict_hotlink_port/install/index.php"
 add_test_files "$strict_hotlink_container"
 assert_status 403 "http://127.0.0.1:$strict_hotlink_port/i/test.png"
 assert_status 200 "http://127.0.0.1:$strict_hotlink_port/i/test.png" "https://allowed.test/page"
+
+https_base_container="$(docker run -d -e LITE_DISABLE_LEGACY_CONFIG=1 -e LITE_BASE_URL=https://images.example.test -p 127.0.0.1::80 "$IMAGE")"
+CONTAINERS="$CONTAINERS $https_base_container"
+https_base_port="$(container_port "$https_base_container")"
+wait_http "http://127.0.0.1:$https_base_port/lite/setup.php"
+https_cookie_headers="$(curl -sS -D - -o /dev/null "http://127.0.0.1:$https_base_port/lite/setup.php" | tr -d '\r')"
+printf '%s\n' "$https_cookie_headers" | grep -Eiq '^Set-Cookie: .*;[[:space:]]*Secure([;[:space:]]|$)' \
+  || fail "expected HTTPS base URL to set a Secure Lite session cookie"
+
+http_base_container="$(docker run -d -e LITE_DISABLE_LEGACY_CONFIG=1 -e LITE_BASE_URL=http://images.example.test -p 127.0.0.1::80 "$IMAGE")"
+CONTAINERS="$CONTAINERS $http_base_container"
+http_base_port="$(container_port "$http_base_container")"
+wait_http "http://127.0.0.1:$http_base_port/lite/setup.php"
+http_cookie_headers="$(curl -sS -D - -o /dev/null "http://127.0.0.1:$http_base_port/lite/setup.php" | tr -d '\r')"
+printf '%s\n' "$http_cookie_headers" | grep -Eiq '^Set-Cookie: '
+if printf '%s\n' "$http_cookie_headers" | grep -Eiq '^Set-Cookie: .*;[[:space:]]*Secure([;[:space:]]|$)'; then
+  fail "expected HTTP base URL to keep the Lite session cookie non-Secure"
+fi
 
 echo "Docker smoke tests passed"

@@ -33,20 +33,28 @@ foreach ($domains as $domain) {
 
 $lines = array(
     '<Directory "/var/www/html/i">',
-    '    RewriteEngine On',
-    '    RewriteCond %{REQUEST_FILENAME} -f',
-    '    RewriteCond %{REQUEST_FILENAME} \.(?:jpe?g|png|gif|webp|bmp|ico|jfif|tiff?|tga)$ [NC]',
+    '    <FilesMatch "(?i)\.(?:jpe?g|png|gif|webp|bmp|ico|jfif|tiff?|tga)$">',
 );
+$requirements = array();
 
 if ($allowEmpty) {
-    $lines[] = '    RewriteCond %{HTTP_REFERER} !^$';
+    $requirements[] = '            Require expr "%{HTTP_REFERER} == \'\'"';
 }
 
 foreach ($patterns as $pattern) {
-    $lines[] = '    RewriteCond %{HTTP_REFERER} !^https?://([^/]+\.)?' . $pattern . '(:[0-9]+)?(/|$) [NC]';
+    $requirements[] = '            Require expr "%{HTTP_REFERER} =~ m#(?i)^https?://([^/]+\.)?' . $pattern . '(:[0-9]+)?(/|$)#"';
 }
 
-$lines[] = '    RewriteRule ^ - [F]';
+if (empty($requirements)) {
+    $lines[] = '        Require all denied';
+} else {
+    $lines[] = '        <RequireAny>';
+    foreach ($requirements as $requirement) {
+        $lines[] = $requirement;
+    }
+    $lines[] = '        </RequireAny>';
+}
+$lines[] = '    </FilesMatch>';
 $lines[] = '</Directory>';
 
 file_put_contents($confFile, implode(PHP_EOL, $lines) . PHP_EOL);

@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.3-apache@sha256:d180f417e5e45389d18597150a947d1ce89cad2a60be6c25f54ffcfd40ee05f5
 
 LABEL org.opencontainers.image.source="https://github.com/Lau0x/piclite" \
       org.opencontainers.image.title="PicLite" \
@@ -17,7 +17,7 @@ RUN set -eux; \
         libzip-dev; \
     docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
     docker-php-ext-install -j"$(nproc)" curl exif gd mbstring opcache zip; \
-    a2enmod headers rewrite; \
+    a2enmod alias headers rewrite; \
     echo 'ServerName localhost' > /etc/apache2/conf-available/servername.conf; \
     a2enconf servername; \
     rm -rf /var/lib/apt/lists/*
@@ -34,6 +34,7 @@ RUN set -eux; \
         /var/www/html/admin/logs/counts \
         /var/www/html/admin/logs/login \
         /var/www/html/admin/logs/login-rate \
+        /var/www/html/admin/logs/lite \
         /var/www/html/admin/logs/tasks \
         /var/www/html/admin/logs/upload \
         /var/www/html/admin/logs/upload-rate \
@@ -44,7 +45,7 @@ RUN set -eux; \
     find /var/www/html -type d -exec chmod 755 {} \;; \
     find /var/www/html -type f -exec chmod 644 {} \;; \
     chmod 755 /usr/local/bin/piclite-entrypoint; \
-    chmod 755 /var/www/html/app/upload.php
+    chmod 755 /var/www/html/app/upload.php /var/www/html/scripts/docker-smoke-test.sh /var/www/html/scripts/lite-smoke-test.sh
 
 EXPOSE 80
 

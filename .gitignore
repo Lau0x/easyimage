@@ -1,8 +1,21 @@
 .DS_Store
 .playwright-mcp/
+.env
+.env.*
+!.env.example
 
 /admin/logs/
 /config/*.lock
+/config/lite.local.php
+/config/lite.local.php.*.tmp
+/config/lite.secret.php
+/config/lite.secret.php.*.tmp
+/config/lite.setup.php
+/config/lite.setup.php.*.tmp
+/config/lite.tokens.php
+/config/lite.tokens.php.*.tmp
+/config/lite.tokens.lock
+/config/lite-rate/
 /i/**
 !/i/.htaccess
 !/i/favicon.ico
