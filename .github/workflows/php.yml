@@ -1,20 +1,49 @@
-name: PHP Lint
+name: PicLite CI
 
 on:
   push:
     branches:
       - main
+      - 'codex/**'
   pull_request:
     branches:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: piclite-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - name: Checkout repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Run static checks
+        run: |
+          sh -n docker/entrypoint.sh
+          sh -n scripts/docker-smoke-test.sh
+          bash -n scripts/lite-smoke-test.sh
+          node --check lite/assets/app.js
+          docker compose config --quiet
+
+      - name: Build and run Classic smoke test
+        run: IMAGE=piclite:ci scripts/docker-smoke-test.sh
 
       - name: Lint PHP files
-        run: docker run --rm -v "$PWD":/work -w /work php:8.3-cli sh -c 'find app admin api install -name "*.php" -print0 | xargs -0 -n1 php -l'
+        run: >-
+          docker run --rm --entrypoint sh piclite:ci -c
+          'find /var/www/html/app /var/www/html/admin /var/www/html/api /var/www/html/install /var/www/html/lite
+          -type f -name "*.php" -exec php -l {} \;'
+
+      - name: Run Lite smoke test
+        run: bash scripts/lite-smoke-test.sh piclite:ci

@@ -6,7 +6,7 @@ CONTAINERS=""
 
 cleanup() {
   for container in $CONTAINERS; do
-    docker stop "$container" >/dev/null 2>&1 || true
+    docker rm -f "$container" >/dev/null 2>&1 || true
   done
 }
 
