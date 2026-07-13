@@ -73,10 +73,12 @@ final class LiteAuth
     {
         $direct = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
             || (int) ($_SERVER['SERVER_PORT'] ?? 0) === 443;
+        $baseScheme = parse_url((string) ($config['base_url'] ?? ''), PHP_URL_SCHEME);
+        $configured = is_string($baseScheme) && strtolower($baseScheme) === 'https';
         $remoteAddress = filter_var($_SERVER['REMOTE_ADDR'] ?? '', FILTER_VALIDATE_IP) ?: '';
         $trusted = $config['trusted_proxy']
             && in_array($remoteAddress, $config['trusted_proxy_ips'], true);
-        return $direct || ($trusted && ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+        return $direct || $configured || ($trusted && ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
     }
 }
 
